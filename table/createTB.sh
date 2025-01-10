@@ -150,8 +150,12 @@ function check_field_exist
 #--------------------------------------------------------
 
 # [PATH NEED TO BE CHANGED]
-source /home/senussi/GIT_SHARE/DBMS_script/var.sh
+# source .././var.sh
+# for current database path
+current_DB_path="/home/ahmed"
 
+#for the name of the current database
+db_name="school"
 #[CHECK] PERMISSION ON DB
 if [ ! -w "$current_DB_path" ]; then
     echo "permission is denid. can't write inside $db_name"
