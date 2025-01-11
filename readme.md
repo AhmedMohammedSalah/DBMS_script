@@ -86,8 +86,9 @@ Offer extra credit for additional features like:
     salah h -> e
     kamal e -> h
     table implemention more hard than DB 
-    10/1 -> study awk - sed createDB.sh +createTB.sh 9.5
-    11/1 -> listDBs.sh 1 +listTB.sh  1  + dropTB.sh  4
+    10/1 -> study awk - sed createDB.sh S+createTB.sh 9.5 K
+    11/1 -> listDBs.sh 1 +listTB.sh  1  +
+        dropTB.sh  4 S
     12/1 ->delDB.sh 4 + delrowTB.sh  7
     13/1 ->insertrowTB.sh 8+showdataTB.sh   9
     14/1 -> updatecellTB.sh  8.5 +refresh
