@@ -70,9 +70,9 @@ Offer extra credit for additional features like:
     Exporting table data to a CSV file. Task Search 
     
     ├── connectDB.sh
-	├── createDB.sh 1 x <FINISHED>
+	├── createDB.sh 1 x
 	├── db.sh end
-	├── delDB.sh 4 x <FINISHED>
+	├── delDB.sh 4 x
 	├── listDBs.sh 1 x
 	├── table
 	│   ├── createTB.sh 9.5 x  <FINISHED>
