@@ -70,14 +70,14 @@ Offer extra credit for additional features like:
     Exporting table data to a CSV file. Task Search 
     
     ├── connectDB.sh
-	├── createDB.sh 1 x
+	├── createDB.sh 1 x <FINISHED>
 	├── db.sh end
-	├── delDB.sh 4 x
+	├── delDB.sh 4 x <FINISHED>
 	├── listDBs.sh 1 x
 	├── table
 	│   ├── createTB.sh 9.5 x  <FINISHED>
 	│   ├── delrowTB.sh  7 x
-	│   ├── dropTB.sh  4 x
+	│   ├── dropTB.sh  4 x  
 	│   ├── insertrowTB.sh 8x
 	│   ├── listTB.sh  1 x     <FINISHED>
 	│   ├── showdataTB.sh   9 x
@@ -87,8 +87,7 @@ Offer extra credit for additional features like:
     kamal e -> h
     table implemention more hard than DB 
     10/1 -> study awk - sed createDB.sh S+createTB.sh 9.5 K
-    11/1 -> listDBs.sh 1 +listTB.sh  1  +
-        dropTB.sh  4 S
+    11/1 -> listDBs.sh 1 +listTB.sh 1+dropTB.sh 4 
     12/1 ->delDB.sh 4 + delrowTB.sh  7
     13/1 ->insertrowTB.sh 8+showdataTB.sh   9
     14/1 -> updatecellTB.sh  8.5 +refresh
