@@ -75,11 +75,11 @@ Offer extra credit for additional features like:
 	├── delDB.sh 4 x
 	├── listDBs.sh 1 x
 	├── table
-	│   ├── createTB.sh 9.5 x
+	│   ├── createTB.sh 9.5 x  <FINISHED>
 	│   ├── delrowTB.sh  7 x
 	│   ├── dropTB.sh  4 x
 	│   ├── insertrowTB.sh 8x
-	│   ├── listTB.sh  1 x
+	│   ├── listTB.sh  1 x     <FINISHED>
 	│   ├── showdataTB.sh   9 x
 	│   └── updatecellTB.sh  8.5
 	└── table.sh
