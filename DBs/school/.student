@@ -1,0 +1,2 @@
+age:integer:not null
+name:string:pk
