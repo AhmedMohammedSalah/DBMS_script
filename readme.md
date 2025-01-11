@@ -71,9 +71,9 @@ Offer extra credit for additional features like:
     
     ├── connectDB.sh
 	├── createDB.sh 1 x
-	├── db.sh end
-	├── delDB.sh 4 x
-	├── listDBs.sh 1 x
+	├── db.sh end              
+	├── delDB.sh 4 x           
+	├── listDBs.sh 1 x         <FINISHED>
 	├── table
 	│   ├── createTB.sh 9.5 x  <FINISHED>
 	│   ├── delrowTB.sh  7 x
