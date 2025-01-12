@@ -1,11 +1,18 @@
 # Main dir of all dbs 
 MainDIR="/home/$USER/databases"
 
-# Current DB path
-current_DB_path="$MainDIR/school"
-
 # Name of the current DB
 db_name="school"
+
+# Current DB path
+current_DB_path="$MainDIR/$db_name"
+
+# Name of current table
+tb_name="student"
+
+# Current Table path
+current_TB_path="$current_DB_path/$tb_name"
+
 
 #for colors
 GRAY='\033[1;30m'
