@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ $# -gt 0  ]; then
+if [ $# -gt 0 ]; then
     if [ ! -w "$1" ] || [ ! -x "$1" ] || [ ! -r "$1" ]; then
-        echo "permission is denid. can't create DB inside $1"
+        echo "permission is denid. can't work inside $1"
         echo "if you want to add permmissions , (sudo passwd needed ) y/n"
         read choice
         if [[ $choice == "y" ]]; then
@@ -16,4 +16,3 @@ if [ $# -gt 0  ]; then
 
     fi
 fi
-
