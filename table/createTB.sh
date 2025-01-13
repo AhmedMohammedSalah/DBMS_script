@@ -44,9 +44,6 @@ if [ -z "$db_name" ]; then
 fi
 #-----------------------------
 
-#for the name of the current database
-#db_name="school"
-
 #[CHECK] PERMISSION ON DB
 if [ ! -w "$current_DB_path" ]; then
     echo "permission is denid. can't write inside $db_name"; exit
@@ -130,16 +127,19 @@ echo "$field_line" > "$table_path"
 echo -e "${GREEN}✔✔ Table created successfully!"
 
 
-
 #CREATE HIDDEN TABLE FILE (META) 
 meta_path="$current_DB_path/.$table_name"
 touch "$meta_path"
 
 
-# Save the dictionary to a file
-for key in "${!dic_fields[@]}"; do
-    echo "$key:${dic_fields[$key]}" >> "$meta_path"
-done
+IFS=":" read -r -a created_names_arr <<< "$field_line"
 
+# Loop through the array and process
+for i in "${created_names_arr[@]}"; do
+
+
+    echo "$i:${dic_fields[${i}]}" # View output
+    echo "$i:${dic_fields[${i}]}" >> "$meta_path"
+done
 
 

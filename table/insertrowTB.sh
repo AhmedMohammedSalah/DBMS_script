@@ -27,7 +27,12 @@ check_rw_permission # [CHECK] READ, WRITE PERMISSIONS
 field_line=""; num=1;
 total_num=$(wc -l < "$current_DB_path/.$tb_name")
 
+
+
 while  IFS= read -r line; do
+
+    # RESET AFTER EACH FIELD
+    null_choice="n"
 
     # [VARS STORE]: FIELD-NAME, DTYPE, CONSTRAINT 
     field_name=$(echo $line | cut -f1 -d:)
@@ -41,20 +46,49 @@ while  IFS= read -r line; do
     echo -e "$GRAY[NOTE >> t: $dtype | c: $constraint]$WHITE"
     read -p  '> ' input </dev/tty
 
-    # [CHECK] IF INPUT IS EMPTY OR NULL 
-    check_empty_null_input input "$field_name" "$dtype" "$constraint"
+    #-----[CHECK CONSTRAINTS]-------------------------------------------------
 
-    #[CHECK] UNIQUE
-    check_unique input "$field_name" "$constraint" "$dtype" $num $total_num
+    # [CHECK] NOTNULL, NULL 
+    check_empty_null_input input "$field_name" "$dtype" "$constraint" null_choice
 
+    #[CHECK] UNIQUE, PK
+    check_unique_pk input "$field_name" "$constraint" "$dtype" $num $total_num
+
+    #-------------------------------------------------------------------------
+
+
+    if [[ "$null_choice" == "n" ]]; then
+
+        #[CHECK] STRING
+        check_string_input input "$field_name" "$constraint" $dtype $num $total_num "$null_choice"
+
+        #[CHECK] INTEGER
+        check_integer_input input "$field_name" "$constraint" $dtype $num $total_num "$null_choice"
+
+        #[CHECK] FLOAT
+        check_float_input input "$field_name" "$constraint" $dtype $num $total_num "$null_choice"
+    fi
 
 
     #[PROCESS]: FOR VIEW
     ((num++))
 
 
-    # [PROCESS]: INSERTION
-    # field_line=... <pass>
+    # [PROCESS]" INSERTION + Add delimiter
+    field_line="$field_line$input"
+
+    if [ $num -le $total_num ]; then
+
+        field_line="$field_line:"
+    fi
 
 
 done < "$current_DB_path/.$tb_name"
+
+
+#ADD ON THE TABLE
+echo "$field_line" >> "$current_TB_path"
+
+# <FEEDBACK>
+echo -e "${GREEN}✔✔ Successfully added Row!!"
+echo -e "${GREEN}$field_line" 

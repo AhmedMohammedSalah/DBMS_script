@@ -53,10 +53,12 @@ check_rw_permission
 # check if the input empty or null(if it is unique or null)
 function check_empty_null_input
 {
+
     declare -n ref=$1 #input
     local field=$2
     local dtype=$3
     local constraint=$4
+    declare -n ref_choice=$5 #<------------#taking it from outside for change
 
     while [ -z "$ref" ]; do
 
@@ -69,6 +71,8 @@ function check_empty_null_input
 
 
             if [[ "$choice" == "y" ]]; then
+                
+                ref_choice="y" # used in checking constraints and dtypes
                 ref="" # to make sure
                 echo -e "${GREEN}✔ empty value added"
                 break
@@ -143,9 +147,9 @@ function check_value_exist
 }
 
 
-#the main function to check if the input unique
+#the main function to check if the input unique or pk
 #if it is unique it close, else loop until get right result
-function check_unique
+function check_unique_pk
 {   
     declare -n ref_input=$1  #1 input
     local field_name=$2  #2 field name
@@ -155,7 +159,7 @@ function check_unique
     local total_num=$6   #6 total num
 
 
-    if [[ "$constraint" == "UNIQUE" ]]; then
+    if [[ "$constraint" == "UNIQUE" || "$constraint" == "PK"  ]]; then
 
         # [PROCES]: GET COLUMN NUMBER
         col_num=$(get_col_num "$field_name")
@@ -172,5 +176,137 @@ function check_unique
             ref_input=$input
         done
 
+    fi
+}
+
+# helper function to flag the main functon 
+# that the input is not string
+str_input_condition() 
+{
+    if [[ $1 =~ ^[a-zA-Z]+$ ]]; then 
+        return 0  # TRUE
+    else 
+        return 1  # FALSE
+    fi
+}
+
+# the main function for checking string 
+# if it string end, else loop until getting the right input
+function check_string_input
+{
+
+    declare -n input_ref=$1  #1 input
+    local field_name=$2  #2 field name
+    local constraint=$3  #3 constraint
+    local dtype=$4      #4 dtype
+    local num=$5         #5 num
+    local total_num=$6   #6 total num
+    local null_choice=$7 #<----------------------------
+
+    if [[ "$dtype" == "STR" ]]; then
+        while ! str_input_condition "$input_ref"; do
+
+            echo -e "${RED}WRONG DTYPE! Enter STRING\n"
+
+            # [ENTER]: NAME
+            echo -e "\n$WHITE($num/$total_num) FIELD: \"$field_name\""
+            echo -e "$GRAY[NOTE >> t: $dtype | c: $constraint]$WHITE"
+            read -p  '> ' input </dev/tty
+
+            # [CHECK] NOTNULL, NULL, UNIQUE, PK
+            check_empty_null_input input "$field_name" "$dtype" "$constraint" null_choice 
+            check_unique_pk input "$field_name" "$constraint" "$dtype" $num $total_num
+
+            input_ref=$input
+        done
+    fi
+}
+
+#----------------------------------------------------------------
+
+int_input_condition() 
+{
+    if [[ $1 =~ ^-?[0-9]+$ ]]; then
+        return 0  # TRUE
+    else
+        return 1  # FALSE
+    fi
+}
+
+
+function check_integer_input
+{
+
+    declare -n input_ref=$1  #1 input
+    local field_name=$2  #2 field name
+    local constraint=$3  #3 constraint
+    local dtype=$4      #4 dtype
+    local num=$5         #5 num
+    local total_num=$6   #6 total num
+    local null_choice=$7 #<----------------------------
+
+    if [[ "$dtype" == "INT" ]]; then
+        while ! int_input_condition "$input_ref"; do
+
+            echo -e "${RED}WRONG DTYPE! Enter INTEGER\n"
+
+            # [ENTER]: NAME
+            echo -e "\n$WHITE($num/$total_num) FIELD: \"$field_name\""
+            echo -e "$GRAY[NOTE >> t: $dtype | c: $constraint]$WHITE"
+            read -p  '> ' input </dev/tty
+
+            # [CHECK] NOTNULL, NULL, UNIQUE, PK
+            check_empty_null_input input "$field_name" "$dtype" "$constraint" null_choice 
+            check_unique_pk input "$field_name" "$constraint" "$dtype" $num $total_num
+
+            input_ref=$input
+        done
+    fi
+}
+
+
+
+
+float_input_condition() 
+{
+    if [[ $1 =~ ^-?[0-9]*\.[0-9]+$ || $1 =~ ^-?[0-9]+$ ]]; then
+        return 0  # TRUE
+    else
+        return 1  # FALSE
+    fi
+}
+
+
+function check_float_input
+{
+
+    declare -n input_ref=$1  #1 input
+    local field_name=$2  #2 field name
+    local constraint=$3  #3 constraint
+    local dtype=$4      #4 dtype
+    local num=$5         #5 num
+    local total_num=$6   #6 total num
+    local null_choice=$7 #<----------------------------
+
+    if [[ "$dtype" == "FLOAT" ]]; then
+        while ! float_input_condition "$input_ref"; do
+
+            # IF CHOICE NO TO BE NULL
+            # IF IT IS NOT NULL
+            echo -e "${RED}WRONG DTYPE! Enter FLOAT\n"
+        
+
+            # [ENTER]: NAME
+            echo -e "\n$WHITE($num/$total_num) FIELD: \"$field_name\""
+            echo -e "$GRAY[NOTE >> t: $dtype | c: $constraint]$WHITE"
+            read -p  '> ' input </dev/tty
+
+
+            # [CHECK] NOTNULL, NULL, UNIQUE, PK
+            check_empty_null_input input "$field_name" "$dtype" "$constraint" null_choice
+            check_unique_pk input "$field_name" "$constraint" "$dtype" $num $total_num
+
+            input_ref=$input
+        done
     fi
 }

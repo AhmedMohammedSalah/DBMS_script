@@ -204,7 +204,7 @@ function add_constraint
     # :-> inifinte loop
     while :; do
         echo "Enter constraint for $field:"
-        echo "1-PK | 2-NOTNULL | 3-UNIQUE | 4-FK"
+        echo "1-PK | 2-NOTNULL | 3-UNIQUE | 4-NULL"
         read -p "> " choice
         case $choice in
             1)  
@@ -218,7 +218,7 @@ function add_constraint
 
             2)  ref="NOTNULL"; break ;;
             3)  ref="UNIQUE";  break ;;
-            4)  ref="FK";      break ;;
+            4)  ref="NULL";    break ;;
             *) echo "Invalid choice." ;;
         esac
     done
