@@ -27,18 +27,18 @@ Provide an option to exit the program gracefully.
  
 Table Management (table.sh): 
  
-    Create Table: <done>
+    Create Table: <done> < k finished>
         Allow users to define a table name and the number of columns. 
         Prompt users to specify column names and their data types (e.g., Integer, String). 
         Create a metadata file to store table structure. --> hidden file
         
-    List Tables: <done>
+    List Tables: <done> < k finished>
         Display all available tables in the connected database.
         
     Drop Table: <done>
         Allow users to delete a table after confirmation. 
     
-    Insert Row: <done> 
+    Insert Row: <done> <k <finished>> 
         Validate and insert data into the table. Ensure primary keys are unique.
         
     Show Data: <done> 
@@ -73,13 +73,13 @@ Offer extra credit for additional features like:
 	├── createDB.sh 1 x
 	├── db.sh end
 	├── delDB.sh 4 x
-	├── listDBs.sh 1 x
+	├── listDBs.sh 1 x           <FINISHED>
 	├── table
-	│   ├── createTB.sh 9.5 x  <FINISHED>
+	│   ├── createTB.sh 9.5 x    <FINISHED>
 	│   ├── delrowTB.sh  7 x
 	│   ├── dropTB.sh  4 x  
-	│   ├── insertrowTB.sh 8x
-	│   ├── listTB.sh  1 x     <FINISHED>
+	│   ├── insertrowTB.sh 8x    <FINISHED>
+	│   ├── listTB.sh  1 x       <FINISHED>
 	│   ├── showdataTB.sh   9 x
 	│   └── updatecellTB.sh  8.5
 	└── table.sh
