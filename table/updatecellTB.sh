@@ -1,22 +1,20 @@
 #!/bin/bash
 #               Logic
 # update all columns
-#     string new-name ,new-age 
+#     string new-name ,new-age
 #     show data (pk)
 #     update all new-name=user-enterd ,new-age=user-entere
-# update specific ex.age new-name=old-name ,new-age=user-entered 
+# update specific ex.age new-name=old-name ,new-age=user-entered
 # delete row (pk)
 # insert pk new-name new-age
 #     1 : ahmed :25
-#     delete row 
-#     insert row pk =1 name =ahmed age=$age  
+#     delete row
+#     insert row pk =1 name =ahmed age=$age
 #     1:kamal:23
-# check permissions ,check exisits pk :cat | grep pk 
+# check permissions ,check exisits pk :cat | grep pk
 #
 # output 1 row affected
-# alternative 
-
-
+# alternative
 
 # Load global variables
 source ../var.sh
@@ -49,7 +47,6 @@ numoffields=${#fields[@]} # Total fields count
 
 # Check permissions
 
-
 # Menu for update options
 while true; do
     echo -e "\n${BOLD_GRAY}------------------------------------------${NC}"
@@ -60,7 +57,7 @@ while true; do
     echo -e "${BOLD_GRAY}------------------------------------------${NC}"
     read -rp "Enter your choice: " choice
 
-case $choice in
+    case $choice in
     1)
         read -rp "Enter the primary key to update: " pk
         echo -e "${BOLD_GREEN}Table fields and types:${BOLD_YELLOW}"
@@ -70,7 +67,7 @@ case $choice in
         echo -e "${BOLD_GREEN}Enter the new values for each field:${NC}"
         new_values_array=()
         for i in "${!fields[@]}"; do
-            current_value=$(awk -v pk="$pk" -F: -v field_num=$((i+1)) '$1 == pk {print $field_num}' "$table")
+            current_value=$(awk -v pk="$pk" -F: -v field_num=$((i + 1)) '$1 == pk {print $field_num}' "$table")
             echo -e "For field '${fields[i]}' (Type: ${types[i]}), current value is '${current_value}'"
             while true; do
                 read -rp "Enter new value for '${fields[i]}': " new_value
@@ -78,8 +75,8 @@ case $choice in
                 # Validate input based on the field type
                 if [[ "${types[i]}" == "INT" && ! "$new_value" =~ ^[0-9]+$ ]]; then
                     echo -e "${BOLD_RED}Error:${NC} Value must be an integer."
-                elif [[ "${types[i]}" == "STRING" && -z "$new_value" ]]; then
-                    echo -e "${BOLD_RED}Error:${NC} Value cannot be empty."
+                elif [[ "${types[i]}" == "STR" && (-z "$new_value" || ! "$new_value" =~ ^[a-zA-Z]+$) ]]; then
+                    echo -e "${BOLD_RED}Error:${NC} Value must be a non-empty string containing only letters and spaces."
                 else
                     new_values_array+=("$new_value")
                     break
@@ -145,6 +142,6 @@ case $choice in
     *)
         echo -e "${BOLD_RED}Error:${NC} Invalid choice. Please select a valid option."
         ;;
-esac
+    esac
 
 done
