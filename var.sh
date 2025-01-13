@@ -1,4 +1,4 @@
-# Main dir of all dbs 
+# Main dir of all dbs
 MainDIR="/home/$USER/databases"
 
 # Name of the current DB
@@ -18,10 +18,9 @@ current_meta_TB_path="$current_DB_path/.$tb_name"
 
 
 #for colors
-GRAY='\033[1;30m'  # for more info before enter
-GREEN='\033[0;32m' # for success
-WHITE='\033[0;37m' # normal enter
-RED='\033[0;31m'   #for error
-BLUE='\033[4;34m'  # for asking (y\n)
+GRAY='\033[1;30m'
+GREEN='\033[0;32m'
+WHITE='\033[0;37m'
+RED='\033[0;31m'
 
 
