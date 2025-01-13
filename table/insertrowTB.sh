@@ -14,8 +14,10 @@
 
 #--------------------------------------------------
 # INCLUDE
-source /home/$USER/GIT_SHARE/DBMS_script/var.sh
-source /home/$USER/GIT_SHARE/DBMS_script/tools/tools_IRTB.sh
+# source /home/$USER/GIT_SHARE/DBMS_script/var.sh
+# source /home/$USER/GIT_SHARE/DBMS_script/tools/tools_IRTB.sh
+source ../var.sh
+source ../tools/tools_IRTB.sh
 
 #---------DEVELOPMENT--CHECK------------------------
 check_db            # [CHECK] DB not chosen
