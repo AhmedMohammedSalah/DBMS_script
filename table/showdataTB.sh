@@ -1,11 +1,14 @@
 #!/bin/bash
-# Script: showdataTB.sh
-# Purpose: Display data from a database table based on different options.
-# Usage: ./showdataTB.sh <table_name>
-#!/bin/bash
-# Script: showdataTB.sh
-# Purpose: Display data from a database table with beautiful UI and coloring.
-
+# ./showdataTB.sh table name
+#               Logic
+# list data from table  -> cat table | advanced
+# depands on specific fields
+# <Bonus> depends on specific word (grep)
+# <Bonus> depends on specific word (grep) and specific field (cut)
+# check permissions
+#
+# output tables
+# alternative -r
 # Load global variables
 source ../var.sh
 
@@ -23,9 +26,9 @@ fi
 fields=()
 while IFS=: read -r first_field _; do
     fields+=("$first_field")
-done < "$metadatafile"
+done <"$metadatafile"
 
-numoffields=${#fields[@]}  # Total fields count
+numoffields=${#fields[@]} # Total fields count
 
 # Check if table exists and is not empty
 if [ ! -f "$table" ]; then
@@ -33,7 +36,7 @@ if [ ! -f "$table" ]; then
     exit 1
 fi
 
-if [ "$(wc -l < "$table")" -le 1 ]; then
+if [ "$(wc -l <"$table")" -le 1 ]; then
     echo -e "${BOLD_RED}Error:${NC} Table '${BOLD_YELLOW}$1${NC}' is empty."
     exit 1
 fi
@@ -44,7 +47,7 @@ for i in "${!fields[@]}"; do
     echo -e "  ${BOLD_CYAN}Field $((i + 1)): ${BOLD_WHITE}${fields[i]}${NC}"
 done
 
-record_count=$(($(wc -l < "$table") - 1))
+record_count=$(($(wc -l <"$table") - 1))
 echo -e "${BOLD_YELLOW}Table '${BOLD_YELLOW}$1${BOLD_YELLOW}' contains ${BOLD_BLUE}$record_count${BOLD_YELLOW} records.${NC}"
 
 # Menu for data display options
@@ -137,7 +140,7 @@ while true; do
             echo -e "${BOLD_RED}Error:${NC} Invalid choice. Please try again."
         fi
         ;;
-    
+
     2)
         echo -e "${BOLD_GREEN}Filter data based on a field and value:${NC}"
         echo -e "${BOLD_MAGENTA}Available fields:${NC}"
@@ -185,4 +188,3 @@ while true; do
         ;;
     esac
 done
-
