@@ -11,6 +11,7 @@
 source /home/$USER/GIT_SHARE/DBMS_script/var.sh
 
 #---------DEVELOPMENT--CHECK-------------------
+
 # [CHECK] if the current DB not chosed
 if [ -z "$db_name" ]; then
     echo -e "${RED} error: the DB not chosed!!"
