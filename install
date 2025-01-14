@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Authors: [Ahmed Mohamed Salah](https://github.com/AhmedMohammedSalah)
+#          [Ahmed Kamal](https://github.com/ahmed-kamal91)
+# Date: 2025-01
+# Version: 1.0
+# Description: This script installs a DBMS, sets up the required directory structure,
+# and creates a utility script for managing database operations.
+
+# Define the installation directory for the DBMS
+CODE_DIR="/usr/bin/DBMA"
+
+# Create the target directory if it doesn't exist
+sudo mkdir -p "$CODE_DIR"
+
+# Copy all files from the current directory to the target directory
+sudo cp -r . "$CODE_DIR"
+
+# Change the permissions of all files and directories in the target directory
+# Note: Setting 777 permissions is not recommended for security reasons.
+# Consider setting more restrictive permissions (e.g., 755).
+sudo chmod -R 755 "$CODE_DIR"
+
+# Create a utility script to simplify running the DBMS
+UTILITY_SCRIPT="/usr/local/bin/doubleA"
+
+# Create the script file and add commands
+sudo bash -c "cat > $UTILITY_SCRIPT" <<'EOF'
+#!/bin/bash
+/usr/bin/DBMA/db.sh
+EOF
+
+# Make the utility script executable
+sudo chmod +x "$UTILITY_SCRIPT"
+
+# Notify the user of successful setup
+echo "DBMS installed successfully. Use 'doubleA' to manage the database."
