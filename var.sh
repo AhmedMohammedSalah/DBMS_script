@@ -1,20 +1,32 @@
 # Main dir of all dbs
 MainDIR="/home/$USER/databases"
-
 # Name of the current DB
-db_name="school"
-
+db_name=""
 # Current DB path
 current_DB_path="$MainDIR/$db_name"
-
 # Name of current table
-tb_name="student"
-
+tb_name=""
 # Current Table path
 current_TB_path="$current_DB_path/$tb_name"
-
 # Current meta Table path
 current_meta_TB_path="$current_DB_path/.$tb_name"
+
+# Code Dir
+# code_DIR="/home/$USER/Code"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Colors for styling
