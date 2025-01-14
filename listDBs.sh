@@ -16,16 +16,19 @@ if [ ! -r $MainDIR ]; then
 fi
 
 # [PROCESS] gather DB names
-DB_lst=$(ls $MainDIR | grep -v /)
+mapfile -t DB_array < <(ls "$MainDIR" | grep -v /)
 
 # [CHECK] EMPTY
-if [ -z "$DB_lst" ]; then
+if [ -z "${DB_array[0]}" ]; then
     echo -e "${RED} EMPTY"
 fi
 
 #[OUTPUT]
-counter=1
-for db_element in $DB_lst; do
-    echo "$counter- $db_element"
+counter=0
+for db_element in $DB_array; do
     ((counter++))
+    echo "$counter- $db_element"
 done
+
+
+# counter and db_array will be used in integation
