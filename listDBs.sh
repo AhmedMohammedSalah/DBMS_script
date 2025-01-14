@@ -9,14 +9,15 @@
 
 source ./var.sh
 
+
 # [CHECK] READ PERMISSION
-if [ ! -r $MainDIR ]; then
+if [ ! -r "$MainDIR" ]; then
     echo -e "${RED} Reading Permission Denied "
     exit
 fi
 
 # [PROCESS] gather DB names
-mapfile -t DB_array < <(ls "$MainDIR" | grep -v /)
+readarray -t DB_array <<< "$(ls -1 "$MainDIR" | grep -v /)"
 
 # [CHECK] EMPTY
 if [ -z "${DB_array[0]}" ]; then
@@ -25,10 +26,9 @@ fi
 
 #[OUTPUT]
 counter=0
-for db_element in $DB_array; do
+for db_element in "${DB_array[@]}"; do
     ((counter++))
     echo "$counter- $db_element"
 done
 
-
-# counter and db_array will be used in integation
+# counter and db_array will be used in integration

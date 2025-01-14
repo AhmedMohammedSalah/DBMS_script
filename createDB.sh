@@ -6,7 +6,6 @@
 # alternative
 
 source ./var.sh
-
 ./tools/checkPermissions.sh $MainDIR
 
 while true; do
