@@ -163,7 +163,7 @@ function check_unique_pk
 
         # [PROCES]: GET COLUMN NUMBER
         col_num=$(get_col_num "$field_name")
-
+check_value_exist
         while ! check_value_exist "$ref_input" "$field_name" "$col_num"; do
 
             echo -e "${RED} INPUT AGAINST <$constraint>"

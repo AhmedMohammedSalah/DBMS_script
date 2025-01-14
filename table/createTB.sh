@@ -45,12 +45,9 @@ if [ -z "$db_name" ]; then
 fi
 #-----------------------------
 
-<<<<<<< HEAD
-=======
 #for the name of the current database
 # db_name="school"
 
->>>>>>> 88a9264d4c42a042911ef1bb12591c52915c58c1
 #[CHECK] PERMISSION ON DB
 # if [ ! -w "$current_DB_path" ]; then
 #     echo "permission is denid. can't write inside $db_name"; exit

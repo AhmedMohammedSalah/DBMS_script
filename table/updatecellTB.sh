@@ -104,36 +104,57 @@ while true; do
 
     2)
         read -rp "Enter the primary key to update: " pk
-        echo -e "${BOLD_MAGENTA}Available fields and types:${NC}"
-        for i in "${!fields[@]}"; do
-            echo -e "${BOLD_YELLOW}$((i + 1)).${NC} ${fields[i]} (Type: ${types[i]})"
-        done
-        read -rp "Enter the column numbers and new values (e.g., 2=new-age,3=new-city): " updates
-
         if grep -q "^$pk:" "$table"; then
-            # Validate and apply updates
-            awk -v pk="$pk" -v updates="$updates" -v FS=":" -v OFS=":" '{
-                if ($1 == pk) {
-                    split(updates, u, ",");
-                    for (i in u) {
-                        split(u[i], pair, "=");
-                        field_num=pair[1];
-                        new_value=pair[2];
-                        # Check field type (e.g., INT)
-                        if (field_num == 2 && !new_value ~ /^[0-9]+$/) {
-                            print "Error: Value for field " field_num " must be an integer!";
-                            next;
-                        }
+            echo -e "${BOLD_MAGENTA}Available fields and types:${NC}"
+            for i in "${!fields[@]}"; do
+                echo -e "${BOLD_YELLOW}$((i + 1)).${NC} ${fields[i]} (Type: ${types[i]})"
+            done
+
+            while true; do
+                read -rp "Enter the column number and new value (e.g., 2=new-value or press Enter to finish): " update
+                if [[ -z "$update" ]]; then
+                    break
+                fi
+
+                # Split the input into field number and new value
+                IFS='=' read -r field_num new_value <<<"$update"
+
+                if [[ -z "$field_num" || -z "$new_value" ]]; then
+                    echo -e "${BOLD_RED}Error:${NC} Invalid input. Please use the format 'field_number=new_value'."
+                    continue
+                fi
+
+                # Adjust field number to match array index (1-based to 0-based)
+                field_index=$((field_num - 1))
+
+                if [[ "$field_index" -lt 0 || "$field_index" -ge "${#fields[@]}" ]]; then
+                    echo -e "${BOLD_RED}Error:${NC} Invalid field number."
+                    continue
+                fi
+
+                # Validate input based on the field type
+                if [[ "${types[field_index]}" == "INT" && ! "$new_value" =~ ^[0-9]+$ ]]; then
+                    echo -e "${BOLD_RED}Error:${NC} Value must be an integer."
+                elif [[ "${types[field_index]}" == "STR" && (-z "$new_value" || ! "$new_value" =~ ^[a-zA-Z[:space:]]+$) ]]; then
+                    echo -e "${BOLD_RED}Error:${NC} Value must be a non-empty string containing only letters and spaces."
+                else
+                    # Apply the update to the table
+                    awk -v pk="$pk" -v field_num="$field_num" -v new_value="$new_value" -v FS=":" -v OFS=":" '{
+                    if ($1 == pk) {
                         $field_num = new_value;
                     }
-                }
-                print $0;
-            }' "$table" >"$table.tmp" && mv "$table.tmp" "$table"
-            echo -e "${BOLD_GREEN}1 row affected.${NC}"
+                    print $0;
+                }' "$table" >"$table.tmp" && mv "$table.tmp" "$table"
+                    echo -e "${BOLD_GREEN}Field ${fields[field_index]} updated successfully.${NC}"
+                fi
+            done
+            echo -e "${BOLD_GREEN}Updates completed.${NC}"
+            
         else
             echo -e "${BOLD_RED}Error:${NC} PK '$pk' not found."
         fi
         ;;
+
     3) # Exit
         echo -e "${BOLD_RED}Exiting...${NC}"
         break
