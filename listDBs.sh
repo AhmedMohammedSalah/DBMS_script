@@ -7,16 +7,13 @@
 # alternative
 # <time> dir cp $1 to base_dir
 
-
 source /home/$USER/GIT_SHARE/DBMS_script/var.sh
-
 
 # [CHECK] READ PERMISSION
 if [ ! -r $MainDIR ]; then
     echo -e "${RED} Reading Permission Denied "
     exit
 fi
-
 
 # [PROCESS] gather DB names
 DB_lst=$(ls $MainDIR | grep -v /)

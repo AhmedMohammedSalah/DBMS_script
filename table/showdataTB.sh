@@ -50,7 +50,6 @@ done
 record_count=$(($(wc -l <"$table") - 1))
 echo -e "${BOLD_YELLOW}Table '${BOLD_YELLOW}$1${BOLD_YELLOW}' contains ${BOLD_BLUE}$record_count${BOLD_YELLOW} records.${NC}"
 
-# Menu for data display options
 while true; do
     echo -e "\n${BOLD_GRAY}------------------------------------------${NC}"
     echo -e "${BOLD_CYAN}Select an option:${NC}"
@@ -111,7 +110,7 @@ while true; do
 
             if [[ "$valid" == "true" ]]; then
                 awk -v fields="${fields[*]}" -v columns="$column_numbers" 'BEGIN {
-                       FS = ":";
+                        FS = ":";
                 split(fields, f, " ");
             for (i in f) {
                     printf "\033[1;36m%-20s\033[0m", f[i];
@@ -153,7 +152,7 @@ while true; do
             field_name="${fields[$((field_number - 1))]}"
             read -rp "Enter the value to match for $field_name: " value
             awk -v field_num="$field_number" -v filter_value="$value" -v fields="${fields[*]}" 'BEGIN {
-                 FS = ":";
+                FS = ":";
                 split(fields, f, " ");
             for (i in f) {
                     printf "\033[1;36m%-20s\033[0m", f[i];
