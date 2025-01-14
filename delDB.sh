@@ -1,32 +1,56 @@
 #!/bin/bash
-#       Logic
-# remove $1 from dirs -> rmdir || rm -r
-# check  permissions , warning message
-# output:- deleted succes --> listDBs
-# alternative
-source ./var.sh
-# before call this file :- 
-# list all dbs 
-# let user add the num of desired DB 
-# pass the name of desired DB to this file
+# Script: deleteDB.sh
+# Purpose: List all databases, let the user select a database by number, and delete it.
 
-# check if the DB exists
-if [ -d "$1" ]; then
-    # check permission
-    ./tools/checkPermissions.sh $1
-    read -p "are you sure you want to delete '$1' DB? (y/n): " choice
-    if [[ $choice == "y" ]] || [[ $choice == "Y" ]]; then
-        rmdir "$1" || rm -r "$1"
-        echo -e "\e[33mDatabase $1 deleted successfully.\e[0m"
-    elif [[ $choice == "n" ]] || [[ $choice == "N" ]]; then
-        echo -e "\e[31mOperation canceled.\e[0m"
-        echo -e "\e[32mDatabase $1 still exists.\e[0m"
-    else
-        echo -e "\e[35mUnknown choice.\e[0m"
-    fi
-    else 
-        echo -e "\e[31mDatabase $1 does not exist.\e[0m"
+# Load global variables
+source ./var.sh
+
+# Check if there are any databases available
+if [ ! "$(ls -A "$MainDIR")" ]; then
+    echo -e "\e[31mNo databases available to delete.\e[0m"
+    exit 1
 fi
 
+# List all databases
+echo -e "\e[36mAvailable Databases:\e[0m"
+databases=()
+counter=1
+for db in "$MainDIR"/*/; do
+    db_name=$(basename "$db")
+    databases+=("$db_name")
+    echo -e "\e[33m$counter.\e[0m \e[32m$db_name\e[0m"
+    ((counter++))
+done
 
+# Prompt user to select a database
+echo -e "\e[35mEnter the number of the database to delete:\e[0m"
+read -rp "Your choice: " choice
 
+# Validate the user input
+if ! [[ "$choice" =~ ^[0-9]+$ ]] || [ "$choice" -lt 1 ] || [ "$choice" -gt "${#databases[@]}" ]; then
+    echo -e "\e[31mInvalid choice. Please run the script again and select a valid number.\e[0m"
+    exit 1
+fi
+
+# Get the selected database name
+selected_db="${databases[$((choice - 1))]}"
+db_path="$MainDIR/$selected_db"
+
+# Check permissions
+./tools/checkPermissions.sh "$db_path"
+
+# Confirm deletion
+read -p "Are you sure you want to delete the database '$selected_db'? (y/n): " confirm
+
+if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+    # Attempt to delete the database
+    if rmdir "$db_path" 2>/dev/null || rm -r "$db_path"; then
+        echo -e "\e[32mDatabase '$selected_db' deleted successfully.\e[0m"
+    else
+        echo -e "\e[31mError: Could not delete the database. Please check permissions or directory contents.\e[0m"
+    fi
+elif [[ "$confirm" == "n" || "$confirm" == "N" ]]; then
+    echo -e "\e[33mOperation canceled. Database '$selected_db' still exists.\e[0m"
+else
+    echo -e "\e[35mUnknown choice. Operation aborted.\e[0m"
+fi
