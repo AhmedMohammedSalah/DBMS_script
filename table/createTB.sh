@@ -27,8 +27,8 @@
 # <time> resriction on the  size of the string for table name
 #-----------------------------------------------------------------
 # [PATH NEED TO BE CHANGED]: GIT_SHARE/DBMS_script
-source ../tools/tools_CTB.sh
-source ../var.sh
+source /home/senussi/GIT_SHARE/DBMS_script/tools/tools_CTB.sh
+source /home/senussi/GIT_SHARE/DBMS_script/var.sh
 
 #-----------------------------------------------------------------
 
@@ -49,9 +49,9 @@ fi
 # db_name="school"
 
 #[CHECK] PERMISSION ON DB
-# if [ ! -w "$current_DB_path" ]; then
-#     echo "permission is denid. can't write inside $db_name"; exit
-# fi
+ if [ ! -w "$current_DB_path" ]; then
+     echo "permission is denid. can't write inside $db_name"; exit
+ fi
 
 # <FEEDBACK>
 echo -e "${GRAY}Inside [$db_name] DB\n"
