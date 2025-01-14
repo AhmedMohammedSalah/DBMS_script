@@ -11,11 +11,11 @@ source ./var.sh
 
 while true; do
     read -p "Enter the name of the database (or type 'exit' to quit): " dbname
-    
-    # Check if input is empty or 
-    # contain special characters 
+
+    # Check if input is empty or
+    # contain special characters
     # or numbers at the start
-    if [[ -z "$dbname" || $dbname =~ ^[0-9] || "$dbname" =~ [^a-zA-Z0-9_] ]]; then
+    if [[ -z "$dbname" || $dbname =~ ^[0-9] || "$dbname" =~ [^a-zA-Z_] ]]; then
         echo -e "${BOLD_RED}Invalid database name. Please ensure that it:${NC}"
         echo -e "${YELLOW}- Is not empty${NC}"
         echo -e "${YELLOW}- Does not start with a number${NC}"

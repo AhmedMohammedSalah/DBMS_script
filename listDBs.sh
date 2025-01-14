@@ -7,7 +7,7 @@
 # alternative
 # <time> dir cp $1 to base_dir
 
-source /home/$USER/GIT_SHARE/DBMS_script/var.sh
+source ./var.sh
 
 # [CHECK] READ PERMISSION
 if [ ! -r $MainDIR ]; then
