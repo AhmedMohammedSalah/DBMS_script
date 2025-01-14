@@ -4,4 +4,8 @@
 # output:-infinity loop of choices
 # alternative
 
-./var 
+source ./var.sh  
+
+
+# ./table/showdataTB.sh $tb_name
+
