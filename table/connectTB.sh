@@ -6,8 +6,7 @@
 # output connected succes --> list tables ->
 #----------------------------------------------
 
-#source $PWD/var.sh [INTEGRATED IN >>> db.sh]
-source ./listTB.sh
+source ./table/listTB.sh
 #<-----[ALTERED]----
 # table_lst : get name based choice as index.
 # Tcounter  : check range of choices.

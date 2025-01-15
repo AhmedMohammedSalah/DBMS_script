@@ -29,6 +29,9 @@ while true; do
     elif [[ "$dbname" == "exit" ]]; then
         echo -e "${BOLD_YELLOW}Exiting...${NC}"
         break
+    elif [[ -d "$MainDIR/$dbname" ]]; then
+        echo -e "${BOLD_RED}Error:${NC} Database '${BOLD_YELLOW}$dbname${NC}' already exists. Please choose a different name."
+
     else
         mkdir -p "$MainDIR/$dbname" #<---SENU---
         # -p option to create parent directories if they don't exist

@@ -95,6 +95,7 @@ echo -e "${CYAN}Creating the utility script at ${YELLOW}${UTILITY_SCRIPT}${NC}..
 sudo bash -c "cat > $UTILITY_SCRIPT" <<EOF
 #!/bin/bash
 /usr/bin/DBMA/db.sh
+
 EOF
 sudo chmod +x "$UTILITY_SCRIPT" && echo -e "${GREEN}Utility script created successfully.${NC}" || {
     echo -e "${RED}Failed to create utility script.${NC}"
@@ -106,4 +107,3 @@ echo -e "${BOLD_GREEN}DBMS installed successfully!${NC}"
 echo -e "${BOLD_YELLOW}Usage:${NC} Type ${BOLD_BLUE}doubleA${NC} in the terminal to run the DBMS."
 
 # /usr/bin/DBMA/db.sh
-

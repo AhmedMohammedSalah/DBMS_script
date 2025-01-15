@@ -15,13 +15,13 @@
 #source ./var.sh # [INTEGRATED >> db.sh]
 
 # Variables
-table=$current_TB_path                #[SENU] OLD =>"$current_DB_path/$tb_name"
-metadatafile=$current_meta_TB_path    #[SENU] OLD =>"$current_DB_path/.$tb_name"
+table=$current_TB_path             #[SENU] OLD =>"$current_DB_path/$tb_name"
+metadatafile=$current_meta_TB_path #[SENU] OLD =>"$current_DB_path/.$tb_name"
 
 # Ensure metadata exists to determine number of fields
 if [ ! -f "$metadatafile" ]; then
     echo -e "${BOLD_RED}Error:${NC} Metadata file for table '${BOLD_YELLOW}$tb_name${NC}' not found."
-    exit 1
+    return 1
 fi
 
 # Read fields from metadata
@@ -35,12 +35,12 @@ numoffields=${#fields[@]} # Total fields count
 # Check if table exists and is not empty
 if [ ! -f "$table" ]; then
     echo -e "${BOLD_RED}Error:${NC} Table '${BOLD_YELLOW}$tb_name${NC}' does not exist."
-    exit 1
+    return 1
 fi
 
 if [ "$(wc -l <"$table")" -le 1 ]; then
     echo -e "${BOLD_RED}Error:${NC} Table '${BOLD_YELLOW}$tb_name${NC}' is empty."
-    exit 1
+    return 1
 fi
 
 # Display table details
@@ -57,7 +57,7 @@ while true; do
     echo -e "${BOLD_CYAN}Select an option:${NC}"
     echo -e "  ${BOLD_BLUE}1.${NC} ${GREEN}List all data from the table${NC}"
     echo -e "  ${BOLD_BLUE}2.${NC} ${GREEN}Select data based on field=value${NC}"
-    echo -e "  ${BOLD_BLUE}3.${NC} ${RED}Exit${NC}"
+    echo -e "  ${BOLD_BLUE}3.${NC} ${RED}Exit ${NC}"
     echo -e "${BOLD_GRAY}------------------------------------------${NC}"
     read -rp "Enter your choice: " choice
 
@@ -67,8 +67,6 @@ while true; do
         echo -e "  ${BOLD_BLUE}1.${NC} ${CYAN}Display all columns${NC}"
         echo -e "  ${BOLD_BLUE}2.${NC} ${CYAN}Display specific columns${NC}"
         read -rp "Enter your choice: " display_choice
-
-    
 
         if [[ "$display_choice" == "1" ]]; then
 
@@ -100,36 +98,47 @@ while true; do
                 print "";
             }' "$table"
 
-  
-
+                # Display specific columns
+       
+        
         elif [[ "$display_choice" == "2" ]]; then
-            # Display specific columns
-            echo -e "${BOLD_MAGENTA}Available fields:${NC}"
-            for i in "${!fields[@]}"; do
-                echo -e "${BOLD_YELLOW}$((i + 1)).${NC} ${fields[i]}"
-            done
-            read -rp "Enter column numbers to display (e.g., 1 3): " column_numbers
+        echo -e "${BOLD_MAGENTA}Available fields:${NC}"
+        for i in "${!fields[@]}"; do
+            echo -e "${BOLD_YELLOW}$((i + 1)).${NC} ${fields[i]}"
+        done
+        read -rp "Enter column numbers to display (e.g., 1 3): " column_numbers
 
-            # Validate column numbers
-            valid=true
-            for col in $column_numbers; do
-                if ! [[ "$col" =~ ^[0-9]+$ ]] || [[ "$col" -lt 1 || "$col" -gt "$numoffields" ]]; then
-                    valid=false
-                    break
-                fi
-            done
+        # Validate column numbers
+        valid=true
+        for col in $column_numbers; do
+            if ! [[ "$col" =~ ^[0-9]+$ ]] || [[ "$col" -lt 1 || "$col" -gt "$numoffields" ]]; then
+                valid=false
+                break
+            fi
+        done
 
-            if [[ "$valid" == "true" ]]; then
-                awk -v fields="${fields[*]}" -v columns="$column_numbers" 'BEGIN {
-                        FS = ":";
+        if [[ "$valid" == "true" ]]; then
+            # Convert column numbers into an array for easier processing
+            column_indices=($column_numbers)
+
+            # Pass selected column indices to awk
+            awk -v fields="${fields[*]}" -v selected_cols="${column_indices[*]}" 'BEGIN {
+                FS = ":";
+                OFS = ":";
+                
+                # Split fields and selected columns into arrays
                 split(fields, f, " ");
-            for (i in f) {
-                    printf "\033[1;36m%-20s\033[0m", f[i];
+                split(selected_cols, cols, " ");
+                
+                # Print headers for selected columns with color and alignment
+                for (i in cols) {
+                    printf "\033[1;36m%-20s\033[0m", f[cols[i]];
                 }
                 print "";
-                print str_repeat("-", 20 * length(f));
+                
+                # Print a separator line
+                print str_repeat("-", 20 * length(cols));
             }
-            
             function str_repeat(char, count) {
                 result = "";
                 for (i = 1; i <= count; i++) {
@@ -137,15 +146,19 @@ while true; do
                 }
                 return result;
             }
-                NR > 1 {
-                    for (i in cols) {
-                        printf "%-20s", $cols[i];
-                    }
-                    print "";
-                }' "$table"
-            else
-                echo -e "${BOLD_RED}Error:${NC} Invalid column numbers. Please try again."
-            fi
+            NR > 1 {
+                # Print data for the selected columns with alignment
+                for (i in cols) {
+                    printf "%-20s", $cols[i];
+                }
+                print "";
+            }' "$table"
+
+        else
+            echo -e "${BOLD_RED}Error:${NC} Invalid column numbers. Please try again."
+        fi
+    
+    
         else
             echo -e "${BOLD_RED}Error:${NC} Invalid choice. Please try again."
         fi
