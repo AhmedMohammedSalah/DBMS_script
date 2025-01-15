@@ -1,41 +1,48 @@
 #!/bin/bash
 
-
 #               Logic
 # list tables  -> ls -l| cut -f10 -d" "|add index to each element   *current path
-
-# check  permissions
+# check permissions
 # output tables   
 # alternative -r 
+#-----------------
 
-source /home/$USER/GIT_SHARE/DBMS_script/var.sh
+#source $PWD/var.sh [INTEGRATED IN >>> db.sh]
+
+# For development
 
 #---------DEVELOPMENT--CHECK-------------------
 
-# [CHECK] if the current DB not chosed
+# [CHECK] if the current DB is not chosen
 if [ -z "$db_name" ]; then
-    echo -e "${RED} error: the DB not chosed!!"
+    echo -e "\e[31mError: The DB is not chosen!!\e[0m"
     exit
 fi
+
 #----------------------------------------------
 
 # [CHECK] READ PERMISSION
-if [ ! -r $current_DB_path ]; then
-    echo -e "${RED} Reading Permission Denied "
+if [ ! -r "$current_DB_path" ]; then
+    echo -e "\e[31mReading Permission Denied\e[0m"
     exit
 fi
 
 # [PROCESS] gather table names
-table_lst=$(ls $current_DB_path | grep -v /)
+readarray -t table_lst <<< "$(ls -1 "$current_DB_path" | grep -v /)"
 
 # [CHECK] EMPTY
-if [ -z "$table_lst" ]; then
-    echo -e "${RED} EMPTY DB"
+if [ "${#table_lst[0]}" -eq 0 ]; then
+    echo -e "\e[31mEMPTY DB\e[0m"
+    return
 fi
 
-#[OUTPUT]
-counter=1
-for table in $table_lst; do
-    echo "$counter- $table"
-    ((counter++))
+# [OUTPUT]
+Tcounter=0
+for table in "${table_lst[@]}"; do
+    ((Tcounter++))
+    echo "$Tcounter- $table"
 done
+
+# variable which will be used in connection
+# Tcounter
+# table_lst

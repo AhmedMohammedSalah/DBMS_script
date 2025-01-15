@@ -27,10 +27,14 @@
 # <time> resriction on the  size of the string for table name
 #-----------------------------------------------------------------
 # [PATH NEED TO BE CHANGED]: GIT_SHARE/DBMS_script
-source /home/senussi/GIT_SHARE/DBMS_script/tools/tools_CTB.sh
-source /home/senussi/GIT_SHARE/DBMS_script/var.sh
+source ./tools/tools_CTB.sh
+#source /home/senussi/GIT_SHARE/DBMS_script/var.sh
 
 #-----------------------------------------------------------------
+
+#[DEBUG] 
+echo "Hello in create table"
+
 
 # TEMP VARS
 field_line=""; dtype=""; constraint=""

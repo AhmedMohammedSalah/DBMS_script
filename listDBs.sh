@@ -7,7 +7,7 @@
 # alternative
 # <time> dir cp $1 to base_dir
 
-source ./var.sh
+#source $PWD/var.sh [INTEGRATED IN >>> db.sh]
 
 
 # [CHECK] READ PERMISSION

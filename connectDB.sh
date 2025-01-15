@@ -3,13 +3,10 @@
 # change dir to  $1 ->cd
 # check  permissions
 # output connected succes --> list tables ->
-# alternative
+#----------------------------------------------
 
+#source $PWD/var.sh [INTEGRATED IN >>> db.sh]
 
-# INCLUDE
-source /home/$USER/GIT_SHARE/DBMS_script/var.sh
-
-# INCLUDE
 source listDBs.sh
 # DB_array : get name based choice as index.
 # counter  : check range of choices.
@@ -26,15 +23,14 @@ while [[ $connect_choice -le 0 ||  $connect_choice -gt $counter ]]; do
 done
 
 
-#----[DEBUG]----------
-# echo "printing db array: "
-# for i in "${DB_array[@]}"; do
-#     echo "$i"
-# done
-#---------------------
-
-((connect_choice--)) # because of array is zero based
+((connect_choice--)) # to be used as index [zero-based]
 
 db_name="${DB_array[$connect_choice]}"
-
+current_DB_path="$MainDIR/$db_name"
+clear
 echo -e "${GREEN}✔✔ <$db_name> DB connected"
+
+
+#----------------------------
+#HERE WHERE OUR STORY BEGIN
+source $PWD/table.sh

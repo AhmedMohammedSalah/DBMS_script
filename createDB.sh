@@ -9,7 +9,12 @@ source ./var.sh
 ./tools/checkPermissions.sh $MainDIR
 
 while true; do
-    read -p "Enter the name of the database (or type 'exit' to quit): " dbname
+    
+    #-- SENU----------------------------------------------
+    echo -e "\n${WHITE}Enter DB Name"
+    echo -e "${GRAY}(type 'exit' to quit):${WHITE}"
+    read -p '> ' dbname
+    #-----------------------------------------------------
 
     # Check if input is empty or
     # contain special characters
@@ -25,9 +30,10 @@ while true; do
         echo -e "${BOLD_YELLOW}Exiting...${NC}"
         break
     else
-        mkdir -p "$MainDIR/$dbname"
+        mkdir -p "$MainDIR/$dbname" #<---SENU---
         # -p option to create parent directories if they don't exist
-        echo -e "${BOLD_GREEN}Database '$dbname' created successfully${NC}"
+        clear
+        echo -e "${BOLD_GREEN}✔✔ DB '$dbname' created successfully${NC}"
         break
     fi
 done

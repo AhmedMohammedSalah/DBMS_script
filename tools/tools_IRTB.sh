@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source /home/$USER/GIT_SHARE/DBMS_script/var.sh
+#[ALREADY INTEGRATED >> db.sh]
+#source /home/$USER/GIT_SHARE/DBMS_script/var.sh
 
 
 #---------DEVELOPMENT--CHECK------------
