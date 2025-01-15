@@ -53,8 +53,9 @@ function display_TT_menu
     echo -e "${BOLD_BLUE}1.${NC} ${GREEN}View Table${NC}"
     echo -e "${BOLD_BLUE}2.${NC} ${GREEN}Insert Row${NC}"
     echo -e "${BOLD_BLUE}3.${NC} ${GREEN}Update Row/Cell${NC}"
-    echo -e "${BOLD_BLUE}4.${NC} ${RED}Remove Row${NC}"
-    echo -e "${BOLD_BLUE}5.${NC} ${RED}TB $tb_name DISCONNECT${NC}"
+    echo -e "${BOLD_BLUE}4.${NC} ${GREEN}Export as CSV/Cell${NC}"
+    echo -e "${BOLD_BLUE}5.${NC} ${RED}Remove Row${NC}"
+    echo -e "${BOLD_BLUE}6.${NC} ${RED}TB $tb_name DISCONNECT${NC}"
     echo -e "${BOLD_GRAY}------------------------------------------${NC}"    
 }
 
@@ -71,21 +72,30 @@ while true; do
     case  "$TT_cmd_choice" in
     1) 
         clear
-        source table/showdataTB.sh;;
+        source table/showdataTB.sh
+        ;;
 
     2)
         clear
-        source table/insertrowTB.sh;;
+        source table/insertrowTB.sh
+        ;;
 
     3)
         clear
-        source table/updatecellTB.sh;;
+        source table/updatecellTB.sh
+        ;;
 
-    4)
-        clear
-        source table/rmrowTB.sh;;
+
+    4)  clear
+        source export2csv.sh
+        ;;
 
     5)
+        clear
+        source table/rmrowTB.sh
+        ;;
+
+    6)
         clear
         echo "Table <$tb_name> DISCONNECTED "
         break;;

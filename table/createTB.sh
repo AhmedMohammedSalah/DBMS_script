@@ -26,14 +26,12 @@
 
 # <time> resriction on the  size of the string for table name
 #-----------------------------------------------------------------
-# [PATH NEED TO BE CHANGED]: GIT_SHARE/DBMS_script
+#GLOBAL VARIABLES
+
+# to store: field name : [dtype, constraint]
+declare -A dic_fields=() # RESET
 source ./tools/tools_CTB.sh
-#source /home/senussi/GIT_SHARE/DBMS_script/var.sh
-
 #-----------------------------------------------------------------
-
-#[DEBUG] 
-echo "Hello in create table"
 
 
 # TEMP VARS
@@ -49,8 +47,6 @@ if [ -z "$db_name" ]; then
 fi
 #-----------------------------
 
-#for the name of the current database
-# db_name="school"
 
 #[CHECK] PERMISSION ON DB
  if [ ! -w "$current_DB_path" ]; then
@@ -61,7 +57,7 @@ fi
 echo -e "${GRAY}Inside [$db_name] DB\n"
 
 # [ENTER]: TABLE NAME
-echo -e "${WHITE}Enter table name:"
+echo -e "${BOLD_BLUE}Enter table name:${NC}"
 read -p "> " table_name
 
 #[CHECK] EMPTY, STRING, EXIST
@@ -75,7 +71,7 @@ echo -e "${GREEN}✔ Table named <$table_name>\n"
 echo -e "${GRAY}[$db_name] DB:\n=>[$table_name] Table\n"
 
 # [ENTER]: NO.FIELDS
-echo -e "${WHITE}Enter number of fields:"
+echo -e "${BOLD_BLUE}Enter number of fields:${NC}"
 read -p "> " num_of_fields
 
 # [CHECK] EMPTY, INTEGER, NEGATIVE
@@ -91,7 +87,7 @@ echo -e "${GREEN}✔ $num_of_fields fields will be entered"
 for ((i=1; i<=num_of_fields; i++)); do
 
     # [ENTER]: FIELD NAME
-    echo -e "${GRAY}\nField $i:\n${WHITE}Enter field name:"
+    echo -e "${GRAY}\nField $i:\n${BOLD_BLUE}Enter field name:${NC}"
     read -p "> " field
 
     # [CHECK]: EMPTY, STRING, ENTERED-BEFORE
@@ -131,9 +127,6 @@ table_path="$current_DB_path/$table_name"
 touch "$table_path"
 echo "$field_line" > "$table_path"
 
-# <FEEDBACK>
-echo -e "${GREEN}✔✔ Table created successfully!"
-
 
 #CREATE HIDDEN TABLE FILE (META) 
 meta_path="$current_DB_path/.$table_name"
@@ -142,12 +135,18 @@ touch "$meta_path"
 
 IFS=":" read -r -a created_names_arr <<< "$field_line"
 
+clear #<----[SENU]
+
 # Loop through the array and process
 for i in "${created_names_arr[@]}"; do
 
-
-    echo "$i:${dic_fields[${i}]}" # View output
+    # <FEEDBACK>
+    echo -e "${GRAY}$i:${dic_fields[${i}]}${NC}" 
     echo "$i:${dic_fields[${i}]}" >> "$meta_path"
 done
+
+
+# <FEEDBACK>
+echo -e "${GREEN}✔✔ Table created successfully!"
 
 

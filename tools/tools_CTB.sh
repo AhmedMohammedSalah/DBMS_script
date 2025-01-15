@@ -1,16 +1,17 @@
-#GLOBAL VARIABLES
-declare -gA dic_fields # to store: field name : [dtype, constraint]
+
+# dic_fields declared in createTB
 
 
 # FUNC: CHECK EMPTY INPUT NAME ?
 function check_empty
 {
+    
     declare -n ref=$1 
     msg=$2
 
     while [ -z "$ref" ]; do
-        echo "Input cannot be empty."
-        echo "$msg"
+        echo -e "${RED}Input cannot be empty."
+        echo -e "${BOLD_BLUE}$msg${NC}"
         read -p "> " new_var  
         ref=$new_var 
     done
@@ -35,7 +36,8 @@ function check_string
     declare -n ref=$1
 
     while ! str_condition "$ref"; do
-        echo "Invalid input, enter string, please:"
+        echo -e "${RED}Invalid input," 
+        echo -e "${BOLD_BLUE}Enter String, please:${NC}"
         read -p "> " name
         ref=$name
     done
@@ -45,9 +47,10 @@ function check_exist
 {
 
     declare -n ref=$1
-    while [ -f "$current_DB_path/$ref" ]; do
 
-        echo "Table name already exists. Enter a different table name:"
+    while [ -f "$current_DB_path/$ref" ]; do
+        echo -e "${RED}Table \"${ref}\" already exists"
+        echo -e "${BOLD_BLUE}Enter Different Table Name:${NC}"
         read -p "> " name
 
         # [CHECK] EMPTY, STRING
@@ -66,14 +69,14 @@ function warn_big_input
     declare -n ref=$1
 
     if [ "$ref" -gt 20 ]; then
-        echo "More than 20 fields, are you sure? (y/n)"
+        echo -e "${BOLD_BLUE}More than 20 fields, are you sure? (y/n)${NC}"
 
         # CONTINUE ?
         read -p "> " choice
 
         if [ "$choice" == "n" ]; then
             # [ENTER]
-            echo "Enter number of fields again:"
+            echo -e "${BOLD_BLUE}Enter number of fields again:${NC}"
             read -p "> " num
 
             # [CHECKs]
@@ -105,7 +108,8 @@ function check_integer
 {
     declare -n ref=$1
     while ! int_condition "$ref"; do
-        echo "Invalid input, enter an integer, please:"
+        echo -e "${RED}Invalid input."
+        echo -e "${BOLD_BLUE}Enter Integer, please:${NC}"
         read -p "> " number
         ref=$number
     done
@@ -118,8 +122,8 @@ function check_negative
     declare -n ref=$1
 
     while [ "$ref" -lt 0 ]; do
-        echo "Invalid number"
-        echo "enter again, please:"
+        echo -e "${RED}Invalid number"
+        echo -e "${BOLD_BLUE}enter again, please:${NC}"
         read -p "> " number
 
         # [CHECK] EMPTY INPUT ?
@@ -151,7 +155,8 @@ function check_field_exist
 {
     declare -n ref=$1
     while ! field_exist_condition "$ref"; do
-        echo "already exist, enter name again:"
+        echo -e "${RED}already exist"
+        echo -e "${BOLD_BLUE}enter name again:${NC}"
         read -p "> " field_name
         ref=$field_name
     done
@@ -164,8 +169,8 @@ function add_dtype
     declare -n ref=$1
     # :-> inifinte loop
     while :; do
-        echo -e "${WHITE}Enter Dtype for $field:"
-        echo "1-STRING | 2-INTEGER | 3-FLOAT"
+        echo -e "${BOLD_BLUE}Enter Dtype for $field:"
+        echo -e "${MAGENTA}1-STRING | 2-INTEGER | 3-FLOAT ${NC}"
         read -p "> " choice
         case $choice in
             1) ref="STR"; break ;;
@@ -203,14 +208,14 @@ function add_constraint
     declare -n ref=$1
     # :-> inifinte loop
     while :; do
-        echo "Enter constraint for $field:"
-        echo "1-PK | 2-NOTNULL | 3-UNIQUE | 4-NULL"
+        echo -e "${BOLD_BLUE}Enter constraint for $field:"
+        echo -e "${MAGENTA}1-PK | 2-NOTNULL | 3-UNIQUE | 4-NULL${NC}"
         read -p "> " choice
         case $choice in
             1)  
                 # [CHECK] ONLY ONE PK
                 if ! PK_condition; then
-                    echo "PK already exist"
+                    echo -e "${RED}PK already exist${NC}"
                     continue 
                 fi
 
