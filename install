@@ -49,7 +49,7 @@ echo
 
 # Add an ASCII art banner
 echo -e "${MAGENTA}"
-cat <<"EOF"
+cat << "EOF"
      ______  ____  __  _______   _______ __  __ _____ 
     |  ____|/ __ \|  \/  \ \ \ / / ____|  \/  |  __ \
     | |__  | |  | | \  / |\ \ V / (___ | \  / | |  | |
@@ -59,33 +59,23 @@ cat <<"EOF"
 EOF
 echo -e "${NC}"
 
-# Proceed with the rest of the script
+# Proceed with the installation process
 CODE_DIR="/usr/bin/DBMA"
 UTILITY_SCRIPT="/usr/local/bin/doubleA"
-GITHUB_REPO="AhmedMohammedSalah/DBMS_script"
 
 echo -e "${BOLD_BLUE}Starting DBMS Installation...${NC}"
 
 # Step 1: Create the installation directory
 echo -e "${CYAN}Creating installation directory at ${YELLOW}${CODE_DIR}${NC}..."
-sudo mkdir -p "$CODE_DIR" && echo -e "${GREEN}Directory created successfully.${NC}" || {
-    echo -e "${RED}Failed to create directory.${NC}"
-    exit 1
-}
+sudo mkdir -p "$CODE_DIR" && echo -e "${GREEN}Directory created successfully.${NC}" || { echo -e "${RED}Failed to create directory.${NC}"; exit 1; }
 
-# Step 2: Clone the GitHub repository
-echo -e "${CYAN}Cloning the repository ${YELLOW}${GITHUB_REPO}${CYAN} into ${YELLOW}${CODE_DIR}${NC}..."
-sudo gh repo clone "$GITHUB_REPO" "$CODE_DIR" && echo -e "${GREEN}Repository cloned successfully.${NC}" || {
-    echo -e "${RED}Failed to clone repository.${NC}"
-    exit 1
-}
+# Step 2: Copy files to the installation directory
+echo -e "${CYAN}Copying project files to ${YELLOW}${CODE_DIR}${NC}..."
+sudo cp -r ./* "$CODE_DIR" && echo -e "${GREEN}Files copied successfully.${NC}" || { echo -e "${RED}Failed to copy files.${NC}"; exit 1; }
 
 # Step 3: Set permissions
 echo -e "${CYAN}Setting permissions for ${YELLOW}${CODE_DIR}${NC}..."
-sudo chmod -R 755 "$CODE_DIR" && echo -e "${GREEN}Permissions set successfully.${NC}" || {
-    echo -e "${RED}Failed to set permissions.${NC}"
-    exit 1
-}
+sudo chmod -R 755 "$CODE_DIR" && echo -e "${GREEN}Permissions set successfully.${NC}" || { echo -e "${RED}Failed to set permissions.${NC}"; exit 1; }
 
 # Step 4: Create the wrapper script
 echo -e "${CYAN}Creating the utility script at ${YELLOW}${UTILITY_SCRIPT}${NC}..."
@@ -93,10 +83,7 @@ sudo bash -c "cat > $UTILITY_SCRIPT" <<EOF
 #!/bin/bash
 /usr/bin/DBMA/db.sh
 EOF
-sudo chmod +x "$UTILITY_SCRIPT" && echo -e "${GREEN}Utility script created successfully.${NC}" || {
-    echo -e "${RED}Failed to create utility script.${NC}"
-    exit 1
-}
+sudo chmod +x "$UTILITY_SCRIPT" && echo -e "${GREEN}Utility script created successfully.${NC}" || { echo -e "${RED}Failed to create utility script.${NC}"; exit 1; }
 
 # Finish installation
 echo -e "${BOLD_GREEN}DBMS installed successfully!${NC}"
