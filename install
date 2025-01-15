@@ -1,0 +1,105 @@
+#!/bin/bash
+
+# Authors: [Ahmed Mohamed Salah](https://github.com/AhmedMohammedSalah)
+#          [Ahmed Kamal](https://github.com/ahmed-kamal91)
+# Date: 2025-01
+# Version: 1.0
+# Description: This script installs a DBMS, sets up the required directory structure,
+# and creates a utility script for managing database operations.
+
+# Define colors
+GRAY='\033[1;30m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+CYAN='\033[0;36m'
+WHITE='\033[0;37m'
+BOLD_GREEN='\033[1;32m'
+BOLD_YELLOW='\033[1;33m'
+BOLD_BLUE='\033[1;34m'
+NC='\033[0m' # No Color
+
+# Print the introductory section
+echo -e "${BOLD_BLUE}"
+echo "=========================================================="
+echo "                     DBMS Installer                       "
+echo "=========================================================="
+echo -e "${NC}"
+
+echo -e "${BOLD_GREEN}# Authors:${NC}"
+echo -e "${YELLOW}[Ahmed Mohamed Salah]${NC}: ${CYAN}https://github.com/AhmedMohammedSalah${NC}"
+echo -e "${YELLOW}[Ahmed Kamal]${NC}: ${CYAN}https://github.com/ahmed-kamal91${NC}"
+echo
+
+echo -e "${BOLD_GREEN}# Date:${NC} ${CYAN}2025-01${NC}"
+echo
+
+echo -e "${BOLD_GREEN}# Version:${NC} ${CYAN}1.0${NC}"
+echo
+
+echo -e "${BOLD_GREEN}# Description:${NC}"
+echo -e "${CYAN}This script installs a DBMS, sets up the required directory structure,"
+echo -e "and creates a utility script for managing database operations.${NC}"
+echo
+
+echo -e "${BOLD_BLUE}==========================================================${NC}"
+echo
+
+# Add an ASCII art banner
+echo -e "${MAGENTA}"
+cat <<"EOF"
+     ______  ____  __  _______   _______ __  __ _____ 
+    |  ____|/ __ \|  \/  \ \ \ / / ____|  \/  |  __ \
+    | |__  | |  | | \  / |\ \ V / (___ | \  / | |  | |
+    |  __| | |  | | |\/| | \   / \___ \| |\/| | |  | |
+    | |    | |__| | |  | |  | |  ____) | |  | | |__| |
+    |_|     \____/|_|  |_|  |_| |_____/|_|  |_|_____/
+EOF
+echo -e "${NC}"
+
+# Proceed with the rest of the script
+CODE_DIR="/usr/bin/DBMA"
+UTILITY_SCRIPT="/usr/local/bin/doubleA"
+GITHUB_REPO="AhmedMohammedSalah/DBMS_script"
+
+echo -e "${BOLD_BLUE}Starting DBMS Installation...${NC}"
+
+# Step 1: Create the installation directory
+echo -e "${CYAN}Creating installation directory at ${YELLOW}${CODE_DIR}${NC}..."
+sudo mkdir -p "$CODE_DIR" && echo -e "${GREEN}Directory created successfully.${NC}" || {
+    echo -e "${RED}Failed to create directory.${NC}"
+    exit 1
+}
+
+# Step 2: Clone the GitHub repository
+echo -e "${CYAN}Cloning the repository ${YELLOW}${GITHUB_REPO}${CYAN} into ${YELLOW}${CODE_DIR}${NC}..."
+sudo gh repo clone "$GITHUB_REPO" "$CODE_DIR" && echo -e "${GREEN}Repository cloned successfully.${NC}" || {
+    echo -e "${RED}Failed to clone repository.${NC}"
+    exit 1
+}
+
+# Step 3: Set permissions
+echo -e "${CYAN}Setting permissions for ${YELLOW}${CODE_DIR}${NC}..."
+sudo chmod -R 755 "$CODE_DIR" && echo -e "${GREEN}Permissions set successfully.${NC}" || {
+    echo -e "${RED}Failed to set permissions.${NC}"
+    exit 1
+}
+
+# Step 4: Create the wrapper script
+echo -e "${CYAN}Creating the utility script at ${YELLOW}${UTILITY_SCRIPT}${NC}..."
+sudo bash -c "cat > $UTILITY_SCRIPT" <<EOF
+#!/bin/bash
+/usr/bin/DBMA/db.sh
+EOF
+sudo chmod +x "$UTILITY_SCRIPT" && echo -e "${GREEN}Utility script created successfully.${NC}" || {
+    echo -e "${RED}Failed to create utility script.${NC}"
+    exit 1
+}
+
+# Finish installation
+echo -e "${BOLD_GREEN}DBMS installed successfully!${NC}"
+echo -e "${BOLD_YELLOW}Usage:${NC} Type ${BOLD_BLUE}doubleA${NC} in the terminal to run the DBMS."
+
+# /usr/bin/DBMA/db.sh

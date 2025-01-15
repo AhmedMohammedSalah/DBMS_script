@@ -1,8 +1,14 @@
 #!/bin/bash
+<<<<<<< HEAD
 
 #               Logic
 # list tables  -> ls -l| cut -f10 -d" "|add index to each element   *current path
 # check permissions
+=======
+#               Logic
+# list tables  -> ls -l| cut -f10 -d" "|add index to each element   *current path
+# check  permissions
+>>>>>>> 35d07fa9b2c13fe3e76d934e7a97a6c1b6425bf5
 # output tables   
 # alternative -r 
 #-----------------

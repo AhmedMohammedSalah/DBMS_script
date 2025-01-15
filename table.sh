@@ -4,6 +4,7 @@
 # output:-infinity loop of choices
 # alternative
 
+<<<<<<< HEAD
 #source $PWD/var.sh [INTEGRATED IN >>> db.sh]
 
 function display_T_menu 
@@ -65,3 +66,10 @@ while true; do
     esac
 done
 clear
+=======
+source ./var.sh  
+
+
+# ./table/showdataTB.sh $tb_name
+
+>>>>>>> 35d07fa9b2c13fe3e76d934e7a97a6c1b6425bf5
