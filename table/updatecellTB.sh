@@ -20,9 +20,10 @@
 #source ./var.sh [INTEGRATED >> db.sh]
 
 # Variables
-table=$current_TB_path                #[SENU] OLD =>"$current_DB_path/$tb_name"
+table=$current_TB_path               #[SENU] OLD =>"$current_DB_path/$tb_name"
+echo "$table"
 metadatafile=$current_meta_TB_path    #[SENU] OLD =>"$current_DB_path/.$tb_name"
-
+echo "$metadatafile"
 # Ensure table and metadata exist
 if [ ! -f "$table" ]; then
     echo -e "${BOLD_RED}Error:${NC} Table '${BOLD_YELLOW}tb_name${NC}' does not exist."
@@ -67,20 +68,23 @@ while true; do
         echo -e "${BOLD_GREEN}Enter the new values for each field:${NC}"
         new_values_array=()
         for i in "${!fields[@]}"; do
-            current_value=$(awk -v pk="$pk" -F: -v field_num=$((i + 1)) 'tb_name == pk {print $field_num}' "$table")
-            echo -e "For field '${fields[i]}' (Type: ${types[i]}), current value is '${current_value}'"
+
+    current_value=$(awk -v pk="$pk" -F: -v field_num=$((i + 1)) '$1 == pk {print $field_num}' "$table")
+        echo -e "For field '${fields[i]}' (Type: ${types[i]}, Constraint: ${constraints[i]}), current value is '${current_value}'"
             while true; do
                 read -rp "Enter new value for '${fields[i]}': " new_value
-
                 # Validate input based on the field type
                 if [[ "${types[i]}" == "INT" && ! "$new_value" =~ ^[0-9]+$ ]]; then
                     echo -e "${BOLD_RED}Error:${NC} Value must be an integer."
+                elif [[ "${types[i]}" == "FLOAT" && ! "$new_value" =~ ^[+-]?[0-9]*\.?[0-9]+$ ]]; then
+                    echo -e "${BOLD_RED}Error:${NC} Value must be a float (e.g., 123, -123.45, or 0.5)."
                 elif [[ "${types[i]}" == "STR" && (-z "$new_value" || ! "$new_value" =~ ^[a-zA-Z]+$) ]]; then
-                    echo -e "${BOLD_RED}Error:${NC} Value must be a non-empty string containing only letters and spaces."
+                    echo -e "${BOLD_RED}Error:${NC} Value must be a non-empty string containing only letters."
                 else
                     new_values_array+=("$new_value")
                     break
                 fi
+
             done
         done
 
@@ -88,71 +92,81 @@ while true; do
         if grep -q "^$pk:" "$table"; then
             # Update the table
             awk -v pk="$pk" -v new_values="${new_values_array[*]}" -v FS=":" -v OFS=":" '{
-                if (tb_name == pk) {
-                    split(new_values, nv, " ");
-                    for (i = 1; i <= length(nv); i++) {
-                        $i = nv[i];
-                    }
+            if ($1 == pk) {
+                # Split new values into an array
+                split(new_values, nv, " ");
+                # Update each field with the new value
+                for (i = 1; i <= length(nv); i++) {
+                    $i = nv[i];
                 }
-                print $0;
-            }' "$table" >"$table.tmp" && mv "$table.tmp" "$table"
-            echo -e "${BOLD_GREEN}1 row affected.${NC}"
+            }
+            print $0;
+        }' "$table" >"$table.tmp" && mv "$table.tmp" "$table"
+        echo -e "${BOLD_GREEN}1 row affected.${NC}"
         else
             echo -e "${BOLD_RED}Error:${NC} PK '$pk' not found."
         fi
         ;;
 
     2)
-        read -rp "Enter the primary key to update: " pk
-        if grep -q "^$pk:" "$table"; then
-            echo -e "${BOLD_MAGENTA}Available fields and types:${NC}"
-            for i in "${!fields[@]}"; do
-                echo -e "${BOLD_YELLOW}$((i + 1)).${NC} ${fields[i]} (Type: ${types[i]})"
-            done
+    read -rp "Enter the primary key to update: " pk
 
-            while true; do
-                read -rp "Enter the column number and new value (e.g., 2=new-value or press Enter to finish): " update
-                if [[ -z "$update" ]]; then
-                    break
-                fi
+    # Check if the primary key exists in the table
+    if grep -q "^$pk:" "$table"; then
+        echo -e "${BOLD_MAGENTA}Available fields, types, and constraints:${NC}"
+        for i in "${!fields[@]}"; do
+            echo -e "${BOLD_YELLOW}$((i + 1)).${NC} ${fields[i]} (Type: ${types[i]}, Constraint: ${constraints[i]})"
+        done
 
-                # Split the input into field number and new value
-                IFS='=' read -r field_num new_value <<<"$update"
+        while true; do
+            read -rp "Enter the column number and new value (e.g., 2=new-value or press Enter to finish): " update
+            if [[ -z "$update" ]]; then
+                break
+            fi
 
-                if [[ -z "$field_num" || -z "$new_value" ]]; then
-                    echo -e "${BOLD_RED}Error:${NC} Invalid input. Please use the format 'field_number=new_value'."
-                    continue
-                fi
+            # Split the input into field number and new value
+            IFS='=' read -r field_num new_value <<<"$update"
 
-                # Adjust field number to match array index (1-based to 0-based)
-                field_index=$((field_num - 1))
+            if [[ -z "$field_num" || -z "$new_value" ]]; then
+                echo -e "${BOLD_RED}Error:${NC} Invalid input. Please use the format 'field_number=new_value'."
+                continue
+            fi
 
-                if [[ "$field_index" -lt 0 || "$field_index" -ge "${#fields[@]}" ]]; then
-                    echo -e "${BOLD_RED}Error:${NC} Invalid field number."
-                    continue
-                fi
+            # Adjust field number to match array index (1-based to 0-based)
+            field_index=$((field_num - 1))
 
-                # Validate input based on the field type
-                if [[ "${types[field_index]}" == "INT" && ! "$new_value" =~ ^[0-9]+$ ]]; then
-                    echo -e "${BOLD_RED}Error:${NC} Value must be an integer."
-                elif [[ "${types[field_index]}" == "STR" && (-z "$new_value" || ! "$new_value" =~ ^[a-zA-Z[:space:]]+$) ]]; then
-                    echo -e "${BOLD_RED}Error:${NC} Value must be a non-empty string containing only letters and spaces."
-                else
-                    # Apply the update to the table
-                    awk -v pk="$pk" -v field_num="$field_num" -v new_value="$new_value" -v FS=":" -v OFS=":" '{
-                    if (tb_name == pk) {
+            if [[ "$field_index" -lt 0 || "$field_index" -ge "${#fields[@]}" ]]; then
+                echo -e "${BOLD_RED}Error:${NC} Invalid field number."
+                continue
+            fi
+
+            # Validate input based on the field type and constraints
+            if [[ "${types[field_index]}" == "INT" && ! "$new_value" =~ ^[0-9]+$ ]]; then
+                echo -e "${BOLD_RED}Error:${NC} Value must be an integer."
+            elif [[ "${types[field_index]}" == "FLOAT" && ! "$new_value" =~ ^[+-]?[0-9]*\.?[0-9]+$ ]]; then
+                echo -e "${BOLD_RED}Error:${NC} Value must be a float."
+            elif [[ "${types[field_index]}" == "STR" && (-z "$new_value" || ! "$new_value" =~ ^[a-zA-Z[:space:]]+$) ]]; then
+                echo -e "${BOLD_RED}Error:${NC} Value must be a non-empty string containing only letters and spaces."
+            elif [[ "${constraints[field_index]}" == "NOTNULL" && -z "$new_value" ]]; then
+                echo -e "${BOLD_RED}Error:${NC} Value cannot be NULL."
+            elif [[ "${constraints[field_index]}" == "UNIQUE" && $(cut -d: -f$((field_index + 1)) "$table" | grep -xq "$new_value"; echo $?) -eq 0 ]]; then
+                echo -e "${BOLD_RED}Error:${NC} Value must be unique."
+            else
+                # Apply the update to the table
+                awk -v pk="$pk" -v field_num=$((field_index + 1)) -v new_value="$new_value" -v FS=":" -v OFS=":" '{
+                    if ($1 == pk) {
                         $field_num = new_value;
                     }
                     print $0;
                 }' "$table" >"$table.tmp" && mv "$table.tmp" "$table"
-                    echo -e "${BOLD_GREEN}Field ${fields[field_index]} updated successfully.${NC}"
-                fi
-            done
-            echo -e "${BOLD_GREEN}Updates completed.${NC}"
-            
-        else
-            echo -e "${BOLD_RED}Error:${NC} PK '$pk' not found."
-        fi
+                echo -e "${BOLD_GREEN}Field ${fields[field_index]} updated successfully.${NC}"
+            fi
+        done
+
+        echo -e "${BOLD_GREEN}Updates completed.${NC}"
+    else
+        echo -e "${BOLD_RED}Error:${NC} PK '$pk' not found."
+    fi
         ;;
 
     3) # Exit
