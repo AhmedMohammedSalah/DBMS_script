@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #       Logic
 # change dir to  $1 ->cd
 # check  permissions
@@ -6,8 +7,8 @@
 #----------------------------------------------
 
 #source $PWD/var.sh [INTEGRATED IN >>> db.sh]
-
-source listTB.sh  #<-----[ALTERED]----
+source ./listTB.sh
+#<-----[ALTERED]----
 # table_lst : get name based choice as index.
 # Tcounter  : check range of choices.
 

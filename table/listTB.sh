@@ -1,16 +1,10 @@
 #!/bin/bash
-<<<<<<< HEAD
 
 #               Logic
 # list tables  -> ls -l| cut -f10 -d" "|add index to each element   *current path
 # check permissions
-=======
-#               Logic
-# list tables  -> ls -l| cut -f10 -d" "|add index to each element   *current path
-# check  permissions
->>>>>>> 35d07fa9b2c13fe3e76d934e7a97a6c1b6425bf5
-# output tables   
-# alternative -r 
+# output tables
+# alternative -r
 #-----------------
 
 #source $PWD/var.sh [INTEGRATED IN >>> db.sh]
@@ -34,7 +28,7 @@ if [ ! -r "$current_DB_path" ]; then
 fi
 
 # [PROCESS] gather table names
-readarray -t table_lst <<< "$(ls -1 "$current_DB_path" | grep -v /)"
+readarray -t table_lst <<<"$(ls -1 "$current_DB_path" | grep -v /)"
 
 # [CHECK] EMPTY
 if [ "${#table_lst[0]}" -eq 0 ]; then
