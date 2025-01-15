@@ -22,6 +22,11 @@ function display_menu {
 
 # Main loop
 while true; do
+
+    # DB DICONNECTING
+    db_name=""
+    current_DB_path=""
+
     display_menu
     read -rp "Enter your choice: " choice
     case $choice in
@@ -35,11 +40,11 @@ while true; do
             source ./connectDB.sh ;;
 
         4)  clear
-            source ./delDB.sh     ;;
+            source ./delDB.sh ;;
 
         5) clear
            echo -e "${BOLD_YELLOW}Exiting...${NC}"
-           exit 0
+           exit 
            ;;
 
         *) clear

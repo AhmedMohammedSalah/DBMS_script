@@ -17,20 +17,20 @@
 # alternative
 
 # Load global variables
-source ../var.sh
+#source ./var.sh [INTEGRATED >> db.sh]
 
 # Variables
-table="$current_DB_path/$1"
-metadatafile="$current_DB_path/.$1"
+table=$current_TB_path                #[SENU] OLD =>"$current_DB_path/$tb_name"
+metadatafile=$current_meta_TB_path    #[SENU] OLD =>"$current_DB_path/.$tb_name"
 
 # Ensure table and metadata exist
 if [ ! -f "$table" ]; then
-    echo -e "${BOLD_RED}Error:${NC} Table '${BOLD_YELLOW}$1${NC}' does not exist."
+    echo -e "${BOLD_RED}Error:${NC} Table '${BOLD_YELLOW}tb_name${NC}' does not exist."
     exit 1
 fi
 
 if [ ! -f "$metadatafile" ]; then
-    echo -e "${BOLD_RED}Error:${NC} Metadata file for table '${BOLD_YELLOW}$1${NC}' not found."
+    echo -e "${BOLD_RED}Error:${NC} Metadata file for table '${BOLD_YELLOW}tb_name${NC}' not found."
     exit 1
 fi
 
@@ -67,7 +67,7 @@ while true; do
         echo -e "${BOLD_GREEN}Enter the new values for each field:${NC}"
         new_values_array=()
         for i in "${!fields[@]}"; do
-            current_value=$(awk -v pk="$pk" -F: -v field_num=$((i + 1)) '$1 == pk {print $field_num}' "$table")
+            current_value=$(awk -v pk="$pk" -F: -v field_num=$((i + 1)) 'tb_name == pk {print $field_num}' "$table")
             echo -e "For field '${fields[i]}' (Type: ${types[i]}), current value is '${current_value}'"
             while true; do
                 read -rp "Enter new value for '${fields[i]}': " new_value
@@ -88,7 +88,7 @@ while true; do
         if grep -q "^$pk:" "$table"; then
             # Update the table
             awk -v pk="$pk" -v new_values="${new_values_array[*]}" -v FS=":" -v OFS=":" '{
-                if ($1 == pk) {
+                if (tb_name == pk) {
                     split(new_values, nv, " ");
                     for (i = 1; i <= length(nv); i++) {
                         $i = nv[i];
@@ -140,7 +140,7 @@ while true; do
                 else
                     # Apply the update to the table
                     awk -v pk="$pk" -v field_num="$field_num" -v new_value="$new_value" -v FS=":" -v OFS=":" '{
-                    if ($1 == pk) {
+                    if (tb_name == pk) {
                         $field_num = new_value;
                     }
                     print $0;

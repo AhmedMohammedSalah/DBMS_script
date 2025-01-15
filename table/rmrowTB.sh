@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# source /home/$USER/GIT_SHARE/DBMS_script/var.sh
-# source /home/$USER/GIT_SHARE/DBMS_script/tools/tools_RRTB.sh
 
-source ../var.sh
-source ../tools/tools_RRTB.sh
+#source ./var.sh [INTERGRATED >> db.sh]
+source ./tools/tools_RRTB.sh
 
 #[PROCSS] GET THE FIELD NAME WITH THE PK
 pk_name=$(grep ":PK" "$current_meta_TB_path" | cut -d ':' -f 1)

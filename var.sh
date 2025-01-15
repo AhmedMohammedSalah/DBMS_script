@@ -1,16 +1,21 @@
 # Main dir of all dbs
 MainDIR="/home/$USER/databases"
+
 # Name of the current DB
 # .updatecell 
 db_name=""
+
 # Current DB path
-current_DB_path="$MainDIR/$db_name"
+current_DB_path=""
+
 # Name of current table
 tb_name=""
+
 # Current Table path
-current_TB_path="$current_DB_path/$tb_name"
+current_TB_path=""
+
 # Current meta Table path
-current_meta_TB_path="$current_DB_path/.$tb_name"
+current_meta_TB_path=""
 
 # Code Dir
 

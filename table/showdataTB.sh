@@ -9,16 +9,18 @@
 #
 # output tables
 # alternative -r
+#------------------------------------------------------
+
 # Load global variables
-source ../var.sh
+#source ./var.sh # [INTEGRATED >> db.sh]
 
 # Variables
-table="$current_DB_path/$1"
-metadatafile="$current_DB_path/.$1"
+table=$current_TB_path                #[SENU] OLD =>"$current_DB_path/$tb_name"
+metadatafile=$current_meta_TB_path    #[SENU] OLD =>"$current_DB_path/.$tb_name"
 
 # Ensure metadata exists to determine number of fields
 if [ ! -f "$metadatafile" ]; then
-    echo -e "${BOLD_RED}Error:${NC} Metadata file for table '${BOLD_YELLOW}$1${NC}' not found."
+    echo -e "${BOLD_RED}Error:${NC} Metadata file for table '${BOLD_YELLOW}$tb_name${NC}' not found."
     exit 1
 fi
 
@@ -32,23 +34,23 @@ numoffields=${#fields[@]} # Total fields count
 
 # Check if table exists and is not empty
 if [ ! -f "$table" ]; then
-    echo -e "${BOLD_RED}Error:${NC} Table '${BOLD_YELLOW}$1${NC}' does not exist."
+    echo -e "${BOLD_RED}Error:${NC} Table '${BOLD_YELLOW}$tb_name${NC}' does not exist."
     exit 1
 fi
 
 if [ "$(wc -l <"$table")" -le 1 ]; then
-    echo -e "${BOLD_RED}Error:${NC} Table '${BOLD_YELLOW}$1${NC}' is empty."
+    echo -e "${BOLD_RED}Error:${NC} Table '${BOLD_YELLOW}$tb_name${NC}' is empty."
     exit 1
 fi
 
 # Display table details
-echo -e "${BOLD_GREEN}Table '${BOLD_YELLOW}$1${BOLD_GREEN}' contains ${BOLD_BLUE}$numoffields${BOLD_GREEN} fields:${NC}"
+echo -e "${BOLD_GREEN}Table '${BOLD_YELLOW}$tb_name${BOLD_GREEN}' contains ${BOLD_BLUE}$numoffields${BOLD_GREEN} fields:${NC}"
 for i in "${!fields[@]}"; do
     echo -e "  ${BOLD_CYAN}Field $((i + 1)): ${BOLD_WHITE}${fields[i]}${NC}"
 done
 
 record_count=$(($(wc -l <"$table") - 1))
-echo -e "${BOLD_YELLOW}Table '${BOLD_YELLOW}$1${BOLD_YELLOW}' contains ${BOLD_BLUE}$record_count${BOLD_YELLOW} records.${NC}"
+echo -e "${BOLD_YELLOW}Table '${BOLD_YELLOW}$tb_name${BOLD_YELLOW}' contains ${BOLD_BLUE}$record_count${BOLD_YELLOW} records.${NC}"
 
 while true; do
     echo -e "\n${BOLD_GRAY}------------------------------------------${NC}"
@@ -66,7 +68,13 @@ while true; do
         echo -e "  ${BOLD_BLUE}2.${NC} ${CYAN}Display specific columns${NC}"
         read -rp "Enter your choice: " display_choice
 
+    
+
         if [[ "$display_choice" == "1" ]]; then
+
+            # FOR CLARITY
+            clear #<----[SENU]
+
             # Display all columns
             awk -v fields="${fields[*]}" 'BEGIN {
                 FS = ":";
@@ -91,6 +99,9 @@ while true; do
                 }
                 print "";
             }' "$table"
+
+  
+
         elif [[ "$display_choice" == "2" ]]; then
             # Display specific columns
             echo -e "${BOLD_MAGENTA}Available fields:${NC}"
