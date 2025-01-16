@@ -31,10 +31,10 @@ Before setting up the project, ensure the following tools and permissions are av
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/AhmedMohammedSalah/DBMS_script
 
 # Navigate to the project directory
-cd <repository-folder>
+cd DBMS_script
 ```
 
 ### **Step 2: Run the Installer Script**
@@ -85,6 +85,7 @@ Once connected to a database, you can:
 - **Create Table:** Add a new table.
 - **List Tables:** Display all tables in the database.
 - **Connect Table:** Access a specific table for data operations.
+- **Export CSV:** Save data to a CSV file at /documents.
 - **Drop Table:** Delete a table from the database.
 - **Disconnect:** Exit the table management menu.
 
@@ -92,6 +93,7 @@ Once connected to a database, you can:
 
 - **View All Data:** Display all rows and columns in a table.
 - **Filter Data:** Display rows matching specific field values.
+- **Update Data:** Update data at rows matching specific field values.
 - **Select Columns:** Display specific columns.
 
 ---
