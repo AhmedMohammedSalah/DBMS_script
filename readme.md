@@ -1,96 +1,135 @@
-database operations like 
-creating, Done 
-listing, Done 
-connecting to  Done 
-deleting databases,Done 
-Instructions: 
-1. General Requirements: 
-Write all scripts using Bash scripting.
-Use clear and user-friendly prompts for interaction. 
-Follow modular programming principles:
-A main script (db.sh) to handle database-level operations. Done  
-A separate script (table.sh) to handle table-level operations.Done 
-Create Database: <done> 
-        Prompt the user to enter a name for the database. 
-        Validate the name to avoid special characters or numbers at the start. 
-        Create a folder for the database and ensure appropriate permissions. 
-List Databases:<done> 
-        Display all available databases in the system. 
-Connect to Database:<done> 
-        Allow the user to connect to an existing database. 
-        Once connected, transfer control to the table.sh script for table operations. 
-Delete Database:<done> 
-        Prompt the user for confirmation before deletion. 
-        Ensure the database exists before attempting deletion. 
-Exit: 
-Provide an option to exit the program gracefully. 
- 
-Table Management (table.sh): 
- 
-    Create Table: <done> < k finished>
-        Allow users to define a table name and the number of columns. 
-        Prompt users to specify column names and their data types (e.g., Integer, String). 
-        Create a metadata file to store table structure. --> hidden file
-        
-    List Tables: <done> < k finished>
-        Display all available tables in the connected database.
-        
-    Drop Table: <done>
-        Allow users to delete a table after confirmation. 
-    
-    Insert Row: <done> <k <finished>> 
-        Validate and insert data into the table. Ensure primary keys are unique.
-        
-    Show Data: <done> 
-        Display table data with an option to select all or specific columns. 
-        
-    Delete Row: <done>
-        Allow users to delete specific rows based on a unique identifier. 
+# Database Management System (DBMS) Project
 
-    Update Cell: <done>
-        Enable users to update specific cells in the table by row and column numbers.
-        string new-name ,new-age 
-        show data (pk)
-        update all new-name=user-enterd ,new-age=user-entere
-	update specific ex.age new-name=old-name ,new-age=user-entered 
-	delete row (pk)
-	insert pk new-name new-age
-        1 : ahmed :25
-        delete row 
-        insert row pk =1 name =ahmed age=$age  
-        1:kamal:23
+## **Introduction**
 
-    Exit: 
-        Return control to the main menu (db.sh). 
- 
-Bonus: 
-Offer extra credit for additional features like: 
+This project is a lightweight Database Management System (DBMS) implemented using Bash scripting. It provides functionalities for managing databases and tables, such as creating, listing, connecting, and deleting them.
 
-    Searching for data within a table.  
-    Exporting table data to a CSV file. Task Search 
-    
-    ├── connectDB.sh
-	├── createDB.sh 1 x
-	├── db.sh end
-	├── delDB.sh 4 x
-	├── listDBs.sh 1 x           <FINISHED>
-	├── table
-	│   ├── createTB.sh 9.5 x    <FINISHED>
-	│   ├── delrowTB.sh  7 x
-	│   ├── dropTB.sh  4 x  
-	│   ├── insertrowTB.sh 8x    <FINISHED>
-	│   ├── listTB.sh  1 x       <FINISHED>
-	│   ├── showdataTB.sh   9 x
-	│   └── updatecellTB.sh  8.5
-	└── table.sh
-    salah h -> e
-    kamal e -> h
-    table implemention more hard than DB 
-    10/1 -> study awk - sed createDB.sh S+createTB.sh 9.5 K
-    11/1 -> listDBs.sh 1 K+listTB.sh 1K+dropTB.sh 4S 
-    12/1 ->delDB.sh 4S + delrowTB.sh  7
-    13/1 ->insertrowTB.sh 8+showdataTB.sh 9
-    14/1 -> updatecellTB.sh  8.5 +refresh
-    15/1 >>free to study for exam 
-    16/1 >> 
-    
+---
+
+## **Features**
+
+- Create and manage multiple databases.
+- Perform table operations (create, list, delete, connect).
+- Filter and display data based on specific fields or values.
+- Interactive menu-driven interface.
+
+---
+
+## **Prerequisites**
+
+Before setting up the project, ensure the following tools and permissions are available:
+
+1. **Operating System:** Linux-based system (e.g., Ubuntu, Debian).
+2. **Shell:** Bash shell.
+3. **Permissions:** Root or sudo privileges to set up the project.
+
+---
+
+## **Installation Steps**
+
+### **Step 1: Clone the Repository**
+
+```bash
+# Clone the repository
+git clone <repository-url>
+
+# Navigate to the project directory
+cd <repository-folder>
+```
+
+### **Step 2: Run the Installer Script**
+
+1. Execute the `install` script to set up the project:
+
+   ```bash
+   chmod +x install
+   sudo ./install
+   ```
+
+2. The script will:
+
+   - Create the installation directory (`/usr/bin/DBMA`).
+   - Copy all project files to the directory.
+   - Create a utility script (`doubleA`) to simplify DBMS access.
+
+3. Once installation is complete, you'll see a success message:
+   ```
+   DBMS installed successfully!
+   Usage: Type doubleA in the terminal to run the DBMS.
+   ```
+
+---
+
+## **Usage Instructions**
+
+### **Starting the DBMS**
+
+1. Run the utility script:
+   ```bash
+   doubleA
+   ```
+2. Follow the interactive menu to perform database operations.
+
+### **Database Operations**
+
+- **Create Database:** Add a new database.
+- **List Databases:** Display all existing databases.
+- **Connect to Database:** Access a specific database for table operations.
+- **Delete Database:** Remove an existing database.
+- **Exit:** Quit the DBMS.
+
+### **Table Operations**
+
+Once connected to a database, you can:
+
+- **Create Table:** Add a new table.
+- **List Tables:** Display all tables in the database.
+- **Connect Table:** Access a specific table for data operations.
+- **Drop Table:** Delete a table from the database.
+- **Disconnect:** Exit the table management menu.
+
+### **Data Operations**
+
+- **View All Data:** Display all rows and columns in a table.
+- **Filter Data:** Display rows matching specific field values.
+- **Select Columns:** Display specific columns.
+
+---
+
+## **File Structure**
+
+- **install**: Setup script for the project.
+- **db.sh**: Main script for database operations.
+- **table.sh**: Script for managing tables.
+- **var.sh**: Stores global variables and configurations.
+- **Other Scripts:** Additional scripts for specific operations (e.g., `createDB.sh`, `listDBs.sh`).
+
+---
+
+## **Uninstallation**
+
+To remove the project from your system:
+
+1. Delete the installation directory:
+   ```bash
+   sudo rm -rf /usr/bin/DBMA
+   ```
+2. Remove the utility script:
+   ```bash
+   sudo rm /usr/local/bin/doubleA
+   ```
+
+---
+
+## **Support**
+
+For any issues or questions, please contact:
+
+- [Ahmed Mohamed Salah](https://github.com/AhmedMohammedSalah)
+- [Ahmed Kamal](https://github.com/ahmed-kamal91)
+
+---
+
+## **License**
+
+This project is open-source and distributed under the MIT License.
