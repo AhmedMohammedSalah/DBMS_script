@@ -132,4 +132,9 @@ For any issues or questions, please contact:
 
 ## **License**
 
-This project is open-source and distributed under the MIT License.
+This project is open-source and distributed under the ITI License.
+
+## **Copyright**
+
+All Copyrights reserved by ITI.
+All rights reserved. 2025.
