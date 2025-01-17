@@ -9,7 +9,7 @@ source ./var.sh
 ./tools/checkPermissions.sh $MainDIR
 
 while true; do
-    
+
     #-- SENU----------------------------------------------
     echo -e "\n${WHITE}Enter DB Name"
     echo -e "${GRAY}(type 'exit' to quit):${WHITE}"
@@ -19,7 +19,7 @@ while true; do
     # Check if input is empty or
     # contain special characters
     # or numbers at the start
-    if [[ -z "$dbname" || $dbname =~ ^[0-9] || "$dbname" =~ [^a-zA-Z_] ]]; then
+    if [[ -z "$dbname" || $dbname =~ ^[0-9] || "$dbname" =~ [^a-zA-Z_] || "$dbname" == *\\* ]]; then
         echo -e "${BOLD_RED}Invalid database name. Please ensure that it:${NC}"
         echo -e "${YELLOW}- Is not empty${NC}"
         echo -e "${YELLOW}- Does not start with a number${NC}"

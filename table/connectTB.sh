@@ -15,18 +15,17 @@ source ./table/listTB.sh
 # [MUST CHECK IF THE LIST EMPTY OR NOT]
 #---------------------------------------
 
-
 # [ENTER]
-echo "enter your choice: "
+echo "Enter your choice: "
 read Tconnect_choice
 
-# LOOP UNTIL GET RIGHT CHOICE
-while [[ $Tconnect_choice -le 0 ||  $Tconnect_choice -gt $Tcounter ]]; do
-    echo -e "${RED}Wrong choice!"
-    echo -e "${WHITE}enter your choice: "
+# LOOP UNTIL GET RIGHT CHOICE AND VALID INPUT
+while [[ $Tconnect_choice -le 0 || $Tconnect_choice -gt $Tcounter || $Tconnect_choice =~ [\\/\.] ]]; do
+    echo -e "${RED}Invalid choice! Input must be a valid number and cannot contain '/', '\\', or '.'"
+    echo -e "${WHITE}Enter your choice: "
     read -p '> ' Tconnect_choice
-done
 
+done
 
 ((Tconnect_choice--)) # to be used as index [zero-based]
 
@@ -38,16 +37,11 @@ current_meta_TB_path="$MainDIR/$db_name/.$tb_name" #dot
 clear
 echo -e "${GREEN}✔✔ <$tb_name> Table connected"
 
-
 #----------------------------
 #HERE WHERE OUR STORY END
 
-
-
-
 function display_TT_menu 
 {   
-    
     echo -e "\n${BOLD_CYAN}<$db_name> DB >>> <$tb_name> Table CONNECTED${NC}"
     echo -e "${BOLD_GRAY}------------------------------------------${NC}"
     echo -e "${BOLD_BLUE}1.${NC} ${GREEN}View Table${NC}"
@@ -58,7 +52,6 @@ function display_TT_menu
     echo -e "${BOLD_BLUE}6.${NC} ${RED}TB $tb_name DISCONNECT${NC}"
     echo -e "${BOLD_GRAY}------------------------------------------${NC}"    
 }
-
 
 while true; do
 
@@ -107,4 +100,3 @@ while true; do
         ;;
     esac
 done
-

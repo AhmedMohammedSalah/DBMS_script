@@ -111,11 +111,11 @@ while true; do
                     # Check if the new primary key value is unique
                     if grep -v "^$pk:" "$table" | cut -d: -f$((pk_index + 1)) | grep -xq "$new_value"; then
                         echo -e "${BOLD_RED}Error:${NC} Primary key must be unique. Value '$new_value' is already used."
-                        continue
+                        break # Exiting the loop for this field, retrying the primary key
                     fi
                 else
                     new_values_array+=("$new_value")
-                    break
+                    break # Proceeding to the next field after valid input
                 fi
             done
         done
