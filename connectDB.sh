@@ -16,11 +16,11 @@ echo "enter your choice: "
 read connect_choice
 
 # LOOP UNTIL GET RIGHT CHOICE
-while [[ $connect_choice -le 0 || $connect_choice -gt $counter || $connect_choice == *"/"* || $connect_choice == *"\\"* || $connect_choice == *"."* ]]; do
+while [[ $connect_choice -le 0 || $connect_choice -gt $counter || $connect_choice == *"/"* || $connect_choice == *"\\"* || $connect_choice == *"."* ]]; do 
     echo -e "${RED}Wrong choice! Input cannot contain '/', '\\', or '.'"
     echo -e "${WHITE}enter your choice: "
-    read -p '> ' connect_choice
-done
+    read -p '> ' connect_choice 2> /dev/null
+done 
 
 ((connect_choice--)) # to be used as index [zero-based]
 

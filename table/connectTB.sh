@@ -65,27 +65,27 @@ while true; do
     case  "$TT_cmd_choice" in
     1) 
         clear
-        source table/showdataTB.sh
+        source table/showdataTB.sh 2> /dev/null
         ;;
 
     2)
         clear
-        source table/insertrowTB.sh
+        source table/insertrowTB.sh 2> /dev/null
         ;;
 
     3)
         clear
-        source table/updatecellTB.sh
+        source table/updatecellTB.sh 2> /dev/null
         ;;
 
 
     4)  clear
-        source export2csv.sh
+        source export2csv.sh 2> /dev/null
         ;;
 
     5)
         clear
-        source table/rmrowTB.sh
+        source table/rmrowTB.sh 2> /dev/null
         ;;
 
     6)
