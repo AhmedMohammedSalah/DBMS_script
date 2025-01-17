@@ -105,5 +105,11 @@ sudo chmod +x "$UTILITY_SCRIPT" && echo -e "${GREEN}Utility script created succe
 # Finish installation
 echo -e "${BOLD_GREEN}DBMS installed successfully!${NC}"
 echo -e "${BOLD_YELLOW}Usage:${NC} Type ${BOLD_BLUE}doubleA${NC} in the terminal to run the DBMS."
-
+#  Delete the source file
+SOURCE_FILE_PATH=$(realpath "$0")
+echo -e "${CYAN}Deleting the source file at ${YELLOW}${SOURCE_FILE_PATH}${NC}..."
+sudo rm -f "$SOURCE_FILE_PATH" && echo -e "${GREEN}Source file deleted successfully.${NC}" || {
+    echo -e "${RED}Failed to delete source file.${NC}"
+    exit 1
+}
 # /usr/bin/DBMA/db.sh

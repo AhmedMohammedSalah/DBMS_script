@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Authors: [Ahmed Mohamed Salah](https://github.com/AhmedMohammedSalah)
+#          [Ahmed Kamal](https://github.com/ahmed-kamal91)
+# Date: 2025-01
+# Version: 1.0
+# Description: This script uninstalls the DBMS by removing all associated files, directories, and the utility script.
+
+# Define colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+BOLD_BLUE='\033[1;34m'
+BOLD_GREEN='\033[1;32m'
+NC='\033[0m' # No Color
+
+# Paths to uninstall
+CODE_DIR="/usr/bin/DBMA"
+UTILITY_SCRIPT="/usr/local/bin/doubleA"
+DATABASE_DIR="/home/$USER/databases"
+
+# Introductory message
+echo -e "${BOLD_BLUE}=========================================================="
+echo "                     DBMS Uninstaller                     "
+echo -e "==========================================================${NC}"
+
+# Step 1: Remove the installation directory
+echo -e "${CYAN}Removing the installation directory at ${CODE_DIR}...${NC}"
+if sudo rm -rf "$CODE_DIR"; then
+    echo -e "${GREEN}Installation directory removed successfully.${NC}"
+else
+    echo -e "${RED}Failed to remove the installation directory.${NC}"
+fi
+
+# Step 2: Remove the utility script
+echo -e "${CYAN}Removing the utility script at ${UTILITY_SCRIPT}...${NC}"
+if sudo rm -f "$UTILITY_SCRIPT"; then
+    echo -e "${GREEN}Utility script removed successfully.${NC}"
+else
+    echo -e "${RED}Failed to remove the utility script.${NC}"
+fi
+
+# Step 3: Remove the databases directory
+echo -e "${CYAN}Removing the databases directory at ${DATABASE_DIR}...${NC}"
+if sudo rm -rf "$DATABASE_DIR"; then
+    echo -e "${GREEN}Databases directory removed successfully.${NC}"
+else
+    echo -e "${RED}Failed to remove the databases directory.${NC}"
+fi
+
+# Completion message
+echo -e "${BOLD_GREEN}DBMS uninstalled successfully!${NC}"
